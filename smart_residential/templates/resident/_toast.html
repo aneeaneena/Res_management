@@ -1,0 +1,29 @@
+{% if toast_success %}
+<div class="fixed top-6 right-6 z-[1000]">
+  <div class="flex items-center gap-3 bg-green-600 text-white px-4 py-3 rounded-lg shadow-lg">
+    <span class="material-symbols-outlined">check_circle</span>
+    <span class="text-sm font-medium">{{ toast_success }}</span>
+  </div>
+</div>
+<script>
+  setTimeout(() => {
+    const toast = document.querySelector('.fixed.top-6.right-6');
+    if (toast) toast.remove();
+  }, 4500);
+</script>
+{% endif %}
+
+{% if toast_error %}
+<div class="fixed top-6 right-6 z-[1000]">
+  <div class="flex items-center gap-3 bg-red-600 text-white px-4 py-3 rounded-lg shadow-lg">
+    <span class="material-symbols-outlined">error</span>
+    <span class="text-sm font-medium">{{ toast_error }}</span>
+  </div>
+</div>
+<script>
+  setTimeout(() => {
+    const toast = document.querySelector('.fixed.top-6.right-6');
+    if (toast) toast.remove();
+  }, 4500);
+</script>
+{% endif %}

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Worker Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+</head>
+<body class="font-display bg-background-light dark:bg-background-dark text-[#111418] dark:text-white transition-colors duration-200">
+<div class="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#e5e7eb] dark:border-b-[#2a3441] bg-white dark:bg-[#1a2634] px-4 md:px-10 py-3 sticky top-0 z-50">
+<div class="flex items-center gap-4 md:gap-8">
+<div class="flex items-center gap-4 text-[#111418] dark:text-white cursor-pointer">
+<span class="material-symbols-outlined text-2xl">menu</span>
+<div class="flex items-center gap-2">
+<div class="size-8 flex items-center justify-center bg-primary rounded-lg text-white">
+<span class="material-symbols-outlined text-xl">engineering</span>
+</div>
+<h2 class="text-[#111418] dark:text-white text-lg font-bold leading-tight tracking-[-0.015em] hidden sm:block">FacilityFix</h2>
+</div>
+</div>
+<label class="hidden md:flex flex-col min-w-40 !h-10 max-w-64">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full group">
+<div class="text-[#617589] dark:text-gray-400 flex border-none bg-background-light dark:bg-background-dark items-center justify-center pl-4 rounded-l-lg border-r-0">
+<span class="material-symbols-outlined text-[20px]">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#111418] dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/20 border-none bg-background-light dark:bg-background-dark focus:border-none h-full placeholder:text-[#617589] dark:placeholder:text-gray-500 px-4 rounded-l-none border-l-0 pl-2 text-base font-normal leading-normal transition-all" placeholder="Search tasks or locations..." value=""/>
+</div>
+</label>
+</div>
+<div class="flex flex-1 justify-end gap-4 md:gap-8 items-center">
+<div class="flex gap-2">
+<button class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full size-10 bg-background-light dark:bg-background-dark hover:bg-gray-200 dark:hover:bg-gray-700 text-[#111418] dark:text-white transition-colors relative">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+<span class="absolute top-2 right-2 size-2 bg-red-500 rounded-full border border-white dark:border-[#1a2634]"></span>
+</button>
+<button class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full size-10 bg-background-light dark:bg-background-dark hover:bg-gray-200 dark:hover:bg-gray-700 text-[#111418] dark:text-white transition-colors">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+</button>
+<a class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full size-10 bg-background-light dark:bg-background-dark hover:bg-gray-200 dark:hover:bg-gray-700 text-[#111418] dark:text-white transition-colors" href="{% url 'logout' %}">
+<span class="material-symbols-outlined text-[20px]">logout</span>
+</a>
+</div>
+<a class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-white dark:border-[#2a3441] shadow-sm cursor-pointer" data-alt="Maintenance worker profile photo" href="{% url 'account_profile' %}" style='background-image: url("{% if user_profile and user_profile.profile_picture %}{{ user_profile.profile_picture.url }}{% else %}https://lh3.googleusercontent.com/aida-public/AB6AXuCotqoY9CHDgFywCy8fzjL4O7kJ4peY16joS_TNYT5z01E8udTryfYfyzmrul3vQH20ehGgVrntaF8p6yyB_3RFvRoY0hmYxi-9Tl9XJvZpryudQ_mmMsz2w3otBKVK_NYdH655dgvp63ZbYmOSRAEa1WRIZLa7P4dzBjbrJL8-rXIZ45i7mwlymP9N4kFI0Rp97VY1budvbKTdR5V4xMb-sUiHesUKZDr-h26O4x4SvMzVFVJRU6z6ARo76mTuAkTyt9vQvEDaG5I{% endif %}");'></a>
+</div>
+</header>
+<div class="px-4 md:px-10 lg:px-40 flex flex-1 justify-center py-5 md:py-10">
+<div class="layout-content-container flex flex-col max-w-[1200px] flex-1 w-full">
+<div class="flex flex-wrap justify-between gap-3 p-4 items-end">
+<div class="flex min-w-72 flex-col gap-2">
+<h1 class="text-[#111418] dark:text-white text-3xl md:text-4xl font-black leading-tight tracking-[-0.033em]">My Tasks</h1>
+<p class="text-[#617589] dark:text-gray-400 text-base font-normal leading-normal">Manage your daily work orders and maintenance requests</p>
+</div>
+<a class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-primary hover:bg-blue-600 text-white gap-2 text-sm font-bold leading-normal tracking-[0.015em] transition-colors shadow-sm shadow-blue-500/20" href="{% url 'maintenance_dashboard' %}">
+<span class="material-symbols-outlined text-[20px]">refresh</span>
+<span class="truncate">Refresh List</span>
+</a>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-4">
+<div class="flex flex-col gap-2 rounded-xl p-6 bg-white dark:bg-[#1a2634] border border-[#e5e7eb] dark:border-[#2a3441] shadow-sm">
+<div class="flex items-center gap-2 text-red-600 dark:text-red-400">
+<span class="material-symbols-outlined">event_busy</span>
+<p class="text-sm font-bold leading-normal uppercase tracking-wider">Due Today</p>
+</div>
+<p class="text-[#111418] dark:text-white tracking-tight text-3xl font-black leading-tight">{{ counts.due_today }}</p>
+</div>
+<div class="flex flex-col gap-2 rounded-xl p-6 bg-white dark:bg-[#1a2634] border border-[#e5e7eb] dark:border-[#2a3441] shadow-sm">
+<div class="flex items-center gap-2 text-orange-600 dark:text-orange-400">
+<span class="material-symbols-outlined">pending_actions</span>
+<p class="text-sm font-bold leading-normal uppercase tracking-wider">Pending</p>
+</div>
+<p class="text-[#111418] dark:text-white tracking-tight text-3xl font-black leading-tight">{{ counts.pending }}</p>
+</div>
+<div class="flex flex-col gap-2 rounded-xl p-6 bg-white dark:bg-[#1a2634] border-l-4 border-l-primary border-y border-r border-y-[#e5e7eb] border-r-[#e5e7eb] dark:border-y-[#2a3441] dark:border-r-[#2a3441] shadow-sm">
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined">timelapse</span>
+<p class="text-sm font-bold leading-normal uppercase tracking-wider">In Progress</p>
+</div>
+<p class="text-[#111418] dark:text-white tracking-tight text-3xl font-black leading-tight">{{ counts.in_progress }}</p>
+</div>
+<div class="flex flex-col gap-2 rounded-xl p-6 bg-white dark:bg-[#1a2634] border border-[#e5e7eb] dark:border-[#2a3441] shadow-sm">
+<div class="flex items-center gap-2 text-emerald-600 dark:text-emerald-400">
+<span class="material-symbols-outlined">task_alt</span>
+<p class="text-sm font-bold leading-normal uppercase tracking-wider">Completed</p>
+</div>
+<p class="text-[#111418] dark:text-white tracking-tight text-3xl font-black leading-tight">{{ counts.completed }}</p>
+</div>
+</div>
+<div class="flex flex-col sm:flex-row gap-4 p-4 items-start sm:items-center justify-between">
+<div class="flex gap-3 flex-wrap">
+<a href="{% url 'maintenance_dashboard' %}?issue_type=all" class="group flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-lg pl-4 pr-3 transition-all {% if issue_type == 'all' %}bg-primary text-white border border-primary{% else %}bg-white dark:bg-[#1a2634] border border-[#dbe0e6] dark:border-[#2a3441] hover:border-primary{% endif %}">
+<p class="text-sm font-medium leading-normal">All Tasks ({{ total_assigned_tasks }})</p>
+</a>
+<a href="{% url 'maintenance_dashboard' %}?issue_type=plumbing" class="group flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-lg pl-4 pr-3 transition-all {% if issue_type == 'plumbing' %}bg-primary text-white border border-primary{% else %}bg-white dark:bg-[#1a2634] border border-[#dbe0e6] dark:border-[#2a3441] hover:border-primary{% endif %}">
+<p class="text-sm font-medium leading-normal">Plumbing ({{ counts.plumbing }})</p>
+</a>
+<a href="{% url 'maintenance_dashboard' %}?issue_type=electrical" class="group flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-lg pl-4 pr-3 transition-all {% if issue_type == 'electrical' %}bg-primary text-white border border-primary{% else %}bg-white dark:bg-[#1a2634] border border-[#dbe0e6] dark:border-[#2a3441] hover:border-primary{% endif %}">
+<p class="text-sm font-medium leading-normal">Electrical ({{ counts.electrical }})</p>
+</a>
+<div class="group flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-white dark:bg-[#1a2634] border border-[#dbe0e6] dark:border-[#2a3441] pl-4 pr-3">
+<p class="text-[#111418] dark:text-white text-sm font-medium leading-normal">Public Requests: {{ counts.public }}</p>
+</div>
+</div>
+<div class="flex items-center gap-2 text-sm text-[#617589] dark:text-gray-400">
+{% if total_tasks > 0 %}
+<span>Showing {{ total_tasks }} task{{ total_tasks|pluralize }}{% if issue_type != 'all' %} in {{ issue_type|title }}{% endif %}</span>
+{% else %}
+<span>No tasks assigned by admin yet</span>
+{% endif %}
+</div>
+</div>
+<div class="px-4 py-3 w-full">
+<div class="flex overflow-hidden rounded-xl border border-[#dbe0e6] dark:border-[#2a3441] bg-white dark:bg-[#1a2634] shadow-sm">
+<table class="flex-1 w-full">
+<thead class="bg-[#f9fafb] dark:bg-[#202d3d] border-b border-[#dbe0e6] dark:border-[#2a3441]">
+<tr>
+<th class="px-6 py-4 text-left text-[#617589] dark:text-gray-400 text-xs font-bold uppercase tracking-wider w-[120px]">ID</th>
+<th class="px-6 py-4 text-left text-[#617589] dark:text-gray-400 text-xs font-bold uppercase tracking-wider">Description</th>
+<th class="hidden md:table-cell px-6 py-4 text-left text-[#617589] dark:text-gray-400 text-xs font-bold uppercase tracking-wider">Location</th>
+<th class="hidden sm:table-cell px-6 py-4 text-left text-[#617589] dark:text-gray-400 text-xs font-bold uppercase tracking-wider w-[180px]">Due Date</th>
+<th class="px-6 py-4 text-left text-[#617589] dark:text-gray-400 text-xs font-bold uppercase tracking-wider w-[120px]">Type</th>
+<th class="px-6 py-4 text-left text-[#617589] dark:text-gray-400 text-xs font-bold uppercase tracking-wider w-[140px]">Status</th>
+<th class="hidden lg:table-cell px-6 py-4 text-left text-[#617589] dark:text-gray-400 text-xs font-bold uppercase tracking-wider w-[170px]">OTP Verification</th>
+<th class="px-6 py-4 text-right text-[#617589] dark:text-gray-400 text-xs font-bold uppercase tracking-wider w-[160px]">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-[#dbe0e6] dark:divide-[#2a3441]">
+{% if tasks %}
+{% for task in tasks %}
+<tr class="hover:bg-gray-50 dark:hover:bg-[#202d3d] transition-colors group">
+<td class="px-6 py-4 text-[#617589] dark:text-gray-400 text-sm font-mono">#WO-{{ task.id }}</td>
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="text-[#111418] dark:text-white text-sm font-semibold">{{ task.title }}</span>
+<span class="md:hidden text-xs text-gray-500 mt-1">{{ task.location|default:"Location not set" }}</span>
+</div>
+</td>
+<td class="hidden md:table-cell px-6 py-4 text-[#617589] dark:text-gray-400 text-sm">{{ task.location|default:"Location not set" }}</td>
+<td class="hidden sm:table-cell px-6 py-4 text-[#617589] dark:text-gray-400 text-sm">
+{% if task.due_date %}{{ task.due_date|date:"M d, H:i" }}{% else %}Not set{% endif %}
+</td>
+<td class="px-6 py-4">
+<div class="flex flex-col gap-1">
+<span class="inline-flex items-center justify-center rounded-full h-7 px-3 text-xs font-bold leading-normal {% if task.issue_type == 'plumbing' %}bg-cyan-100 text-cyan-700{% elif task.issue_type == 'electrical' %}bg-violet-100 text-violet-700{% else %}bg-slate-100 text-slate-700{% endif %}">
+{{ task.issue_type|title }}
+</span>
+{% if task.is_public_request %}
+<span class="text-[11px] font-semibold text-primary">Public Request (Admin)</span>
+{% endif %}
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="inline-flex items-center justify-center rounded-full h-7 px-3 text-xs font-bold leading-normal
+{% if task.status == 'in_progress' %} bg-primary/10 text-primary dark:bg-primary/20 dark:text-blue-300
+{% elif task.status == 'completed' %} bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300
+{% elif task.status == 'on_hold' %} bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300
+{% else %} bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-300{% endif %}">
+{{ task.get_status_display }}
+</div>
+</td>
+<td class="hidden lg:table-cell px-6 py-4">
+<div class="flex flex-col gap-1">
+{% if task.otp_state == 'verified' %}
+<span class="inline-flex items-center justify-center rounded-full h-7 px-3 text-xs font-bold leading-normal bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300">
+OTP Verified
+</span>
+<span class="text-[11px] text-gray-500 dark:text-gray-400">
+{{ task.otp_verified_at|date:"M d, H:i" }}
+</span>
+{% elif task.otp_state == 'pending_verification' %}
+<span class="inline-flex items-center justify-center rounded-full h-7 px-3 text-xs font-bold leading-normal bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300">
+Waiting for OTP
+</span>
+<span class="text-[11px] text-gray-500 dark:text-gray-400">
+Verify when marking completed
+</span>
+{% else %}
+<span class="inline-flex items-center justify-center rounded-full h-7 px-3 text-xs font-bold leading-normal bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300">
+Not Required
+</span>
+<span class="text-[11px] text-gray-500 dark:text-gray-400">
+Public/admin request
+</span>
+{% endif %}
+</div>
+</td>
+<td class="px-6 py-4 text-right">
+<a href="{% url 'update_task' task.id %}" class="inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-3 py-2 text-sm font-bold text-white shadow-sm transition-all hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:focus:ring-offset-[#1a2634]">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+Update
+</a>
+</td>
+</tr>
+{% endfor %}
+{% else %}
+<tr><td class="px-6 py-6 text-sm text-gray-500" colspan="8">No tasks found for this filter.</td></tr>
+{% endif %}
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<script>
+    (function () {
+        history.pushState({ dashboardGuard: true }, "", window.location.href);
+        window.addEventListener("pageshow", function (event) {
+            if (event.persisted) {
+                window.location.reload();
+            }
+        });
+        window.addEventListener("popstate", function () {
+            history.pushState({ dashboardGuard: true }, "", window.location.href);
+        });
+    })();
+</script>
+</body></html>

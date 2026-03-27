@@ -1,0 +1,296 @@
+﻿<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Delivery Preferences - Resident Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+        darkMode: "class",
+        theme: {
+            extend: {
+                colors: {
+                    primary: "#137fec",
+                    "background-light": "#f6f7f8",
+                    "background-dark": "#101922",
+                },
+                fontFamily: {
+                    display: ["Inter", "sans-serif"],
+                },
+            },
+        },
+    };
+</script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-[#111418] dark:text-white min-h-screen">
+{% include "resident/_toast.html" %}
+<div class="flex min-h-screen">
+<aside class="hidden lg:flex w-72 flex-col justify-between bg-white dark:bg-[#1a242f] border-r border-[#f0f2f4] dark:border-gray-800 p-4">
+<div class="flex flex-col gap-8">
+<div class="flex gap-3 px-2">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-12" style='background-image: url("{% if resident_profile and resident_profile.profile_picture %}{{ resident_profile.profile_picture.url }}{% endif %}"); background-color: #dbeafe;'></div>
+<div class="flex flex-col justify-center">
+<h1 class="text-base font-bold">{{ request.user.username }}</h1>
+<p class="text-xs text-[#617589] dark:text-gray-400">
+{% if resident_profile %}{{ resident_profile.building|default:"Building" }} - Unit {{ resident_profile.unit|default:"Not set" }}{% else %}Unit not set{% endif %}
+</p>
+</div>
+</div>
+<nav class="flex flex-col gap-1">
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-[#617589] dark:text-gray-400 hover:bg-[#f0f2f4] dark:hover:bg-gray-800" href="{% url 'resident_dashboard' %}"><span class="material-symbols-outlined">dashboard</span><span class="text-sm font-medium">Dashboard</span></a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg bg-primary/10 text-primary" href="{% url 'delivery_status' %}"><span class="material-symbols-outlined">local_shipping</span><span class="text-sm font-bold">Deliveries</span></a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-[#617589] dark:text-gray-400 hover:bg-[#f0f2f4] dark:hover:bg-gray-800" href="{% url 'amenities' %}"><span class="material-symbols-outlined">domain</span><span class="text-sm font-medium">Facilities</span></a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-[#617589] dark:text-gray-400 hover:bg-[#f0f2f4] dark:hover:bg-gray-800" href="{% url 'profile' %}"><span class="material-symbols-outlined">settings</span><span class="text-sm font-medium">Settings</span></a>
+</nav>
+</div>
+<div class="border-t border-[#f0f2f4] dark:border-gray-800 pt-4 px-2">
+<a class="flex items-center gap-3 text-[#617589] dark:text-gray-400 hover:text-red-500" href="{% url 'logout' %}"><span class="material-symbols-outlined">logout</span><span class="text-sm font-medium">Sign Out</span></a>
+</div>
+</aside>
+<main class="flex-1">
+<div class="max-w-6xl mx-auto px-4 md:px-8 py-8 flex flex-col gap-8">
+<div class="flex flex-col gap-2">
+<p class="text-sm text-[#617589] dark:text-gray-400">Resident / Deliveries / Preferences</p>
+<h1 class="text-3xl font-black">Water Booking and Daily Delivery Skips</h1>
+<p class="text-[#617589] dark:text-gray-400">Water booking stays unchanged. Milk is converted to a skip request, and residents can now skip milk, newspaper, or both for a chosen number of days.</p>
+</div>
+<div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+<section class="xl:col-span-2 bg-white dark:bg-[#1a242f] rounded-2xl border border-[#f0f2f4] dark:border-gray-800 p-6 md:p-8 shadow-sm">
+<form method="post" class="flex flex-col gap-6">
+{% csrf_token %}
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<label id="skip-card" class="rounded-2xl border-2 border-primary bg-primary/5 p-6 cursor-pointer flex flex-col gap-3">
+<input checked class="sr-only" name="delivery_type" type="radio" value="skip"/>
+<span class="material-symbols-outlined text-primary text-4xl">event_busy</span>
+<span id="skip-title" class="text-lg font-bold text-primary">Skip Daily Deliveries</span>
+<span class="text-sm text-[#617589] dark:text-gray-400">Pause milk and newspaper for a fixed number of days.</span>
+</label>
+<label id="water-card" class="rounded-2xl border-2 border-[#e5e7eb] dark:border-gray-700 p-6 cursor-pointer flex flex-col gap-3">
+<input class="sr-only" name="delivery_type" type="radio" value="water"/>
+<span class="material-symbols-outlined text-[#617589] dark:text-gray-400 text-4xl">local_drink</span>
+<span id="water-title" class="text-lg font-bold text-[#617589] dark:text-gray-400">Water Cans</span>
+<span class="text-sm text-[#617589] dark:text-gray-400">Keep the existing water delivery booking flow.</span>
+</label>
+</div>
+
+<div id="skip-fields" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="md:col-span-2">
+<label class="text-sm font-bold" for="skip_start_date">Skip Start Date</label>
+<input class="mt-2 w-full rounded-xl border-0 bg-[#f0f2f4] dark:bg-gray-800 px-4 py-3 focus:ring-2 focus:ring-primary" id="skip_start_date" name="skip_start_date" type="date"/>
+</div>
+<div class="md:col-span-2">
+<p class="text-sm font-bold">Skip These Daily Deliveries</p>
+<div class="mt-3 grid grid-cols-1 md:grid-cols-2 gap-3">
+<label class="flex items-center gap-3 rounded-xl bg-[#f0f2f4] dark:bg-gray-800 px-4 py-3">
+<input class="rounded border-gray-300 text-primary focus:ring-primary" name="skip_milk" type="checkbox"/>
+<span class="font-medium">Milk</span>
+</label>
+<label class="flex items-center gap-3 rounded-xl bg-[#f0f2f4] dark:bg-gray-800 px-4 py-3">
+<input class="rounded border-gray-300 text-primary focus:ring-primary" name="skip_newspaper" type="checkbox"/>
+<span class="font-medium">Newspaper</span>
+</label>
+</div>
+</div>
+<div>
+<label class="text-sm font-bold" for="skip_days">Number of Days</label>
+<input class="mt-2 w-full rounded-xl border-0 bg-[#f0f2f4] dark:bg-gray-800 px-4 py-3 focus:ring-2 focus:ring-primary" id="skip_days" min="1" name="skip_days" placeholder="e.g. 3" type="number"/>
+</div>
+</div>
+
+<div id="water-fields" class="hidden grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="md:col-span-2">
+<label class="text-sm font-bold" for="expected_date">Water Delivery Date</label>
+<input class="mt-2 w-full rounded-xl border-0 bg-[#f0f2f4] dark:bg-gray-800 px-4 py-3 focus:ring-2 focus:ring-primary" id="expected_date" name="expected_date" type="date"/>
+</div>
+<div class="md:col-span-2">
+<p class="text-sm font-bold">Water Payment Option</p>
+<div class="mt-3 grid grid-cols-1 md:grid-cols-2 gap-3">
+<label class="flex items-center gap-3 rounded-xl bg-[#f0f2f4] dark:bg-gray-800 px-4 py-3">
+<input {% if payment_prefill.payment_method|default:'online' == 'online' %}checked{% endif %} class="rounded border-gray-300 text-primary focus:ring-primary" name="payment_method" type="radio" value="online"/>
+<span class="font-medium">Online Payment (QR)</span>
+</label>
+<label class="flex items-center gap-3 rounded-xl bg-[#f0f2f4] dark:bg-gray-800 px-4 py-3">
+<input {% if payment_prefill.payment_method == 'at_delivery' %}checked{% endif %} class="rounded border-gray-300 text-primary focus:ring-primary" name="payment_method" type="radio" value="at_delivery"/>
+<span class="font-medium">Pay at Delivery</span>
+</label>
+</div>
+</div>
+<div>
+<label class="text-sm font-bold" for="payment_amount">Water Amount (INR)</label>
+<input class="mt-2 w-full rounded-xl border-0 bg-[#f0f2f4] dark:bg-gray-800 px-4 py-3 focus:ring-2 focus:ring-primary" id="payment_amount" min="1" name="payment_amount" step="0.01" type="number" value="{{ payment_prefill.payment_amount|default:'50.00' }}"/>
+</div>
+<div id="online-reference-wrap">
+<label class="text-sm font-bold" for="payment_reference">Payment Reference (Optional)</label>
+<input class="mt-2 w-full rounded-xl border-0 bg-[#f0f2f4] dark:bg-gray-800 px-4 py-3 focus:ring-2 focus:ring-primary" id="payment_reference" name="payment_reference" placeholder="Enter UPI reference if paid" type="text" value="{{ payment_prefill.payment_reference|default:'' }}"/>
+</div>
+<div id="water-qr-wrap" class="md:col-span-2 rounded-2xl bg-[#f8fafc] dark:bg-gray-900 border border-[#e2e8f0] dark:border-gray-700 p-4">
+<p class="text-sm font-bold mb-2">Scan QR to Pay Online</p>
+<div class="flex flex-col md:flex-row items-start gap-4">
+<img alt="Water payment QR" class="size-44 rounded-xl border border-[#e5e7eb] dark:border-gray-700 bg-white p-2" id="water-qr-image" src="{{ water_qr_url }}"/>
+<div class="text-sm text-[#617589] dark:text-gray-400">
+<p>UPI ID: <span class="font-semibold text-[#111418] dark:text-white">{{ water_upi_id }}</span></p>
+<p class="mt-1">Amount updates automatically based on the value you enter.</p>
+<p class="mt-1">After payment, you can enter the transaction reference.</p>
+</div>
+</div>
+</div>
+</div>
+
+<div>
+<label id="vendor-label" class="text-sm font-bold" for="courier_name">Vendor / Note Source</label>
+<input class="mt-2 w-full rounded-xl border-0 bg-[#f0f2f4] dark:bg-gray-800 px-4 py-3 focus:ring-2 focus:ring-primary" id="courier_name" name="courier_name" placeholder="e.g. Local dairy agent" type="text"/>
+</div>
+
+<div>
+<label class="text-sm font-bold" for="instructions">Instructions</label>
+<textarea class="mt-2 w-full rounded-xl border-0 bg-[#f0f2f4] dark:bg-gray-800 px-4 py-3 focus:ring-2 focus:ring-primary resize-none" id="instructions" name="instructions" placeholder="Optional notes for the staff." rows="4"></textarea>
+</div>
+
+<div class="flex gap-3">
+<button class="flex-1 rounded-xl bg-primary px-6 py-3 text-white font-bold hover:bg-primary/90" id="submit-button" type="submit">Create Skip Request</button>
+<a class="flex-1 rounded-xl bg-[#f0f2f4] dark:bg-gray-800 px-6 py-3 text-center font-bold" href="{% url 'delivery_status' %}">Cancel</a>
+</div>
+</form>
+</section>
+
+<div class="flex flex-col gap-6">
+<section class="bg-primary/10 border border-primary/20 rounded-2xl p-6">
+<h2 class="font-bold text-primary mb-3">Rules</h2>
+<ul class="space-y-3 text-sm text-[#111418] dark:text-gray-300">
+<li>Skip requests create daily skipped entries for each selected day.</li>
+<li>Milk and newspaper can be skipped together or separately.</li>
+<li>Water booking remains a normal delivery booking.</li>
+</ul>
+</section>
+<section class="bg-white dark:bg-[#1a242f] rounded-2xl border border-[#f0f2f4] dark:border-gray-800 p-6">
+<h2 class="font-bold mb-4">Recent Entries</h2>
+<div class="space-y-4">
+{% for delivery in deliveries %}
+<div class="flex items-start gap-3">
+<div class="size-10 rounded-lg flex items-center justify-center {% if delivery.status == 'skipped' %}bg-red-100 text-red-600{% elif delivery.status == 'delivered' %}bg-green-100 text-green-600{% else %}bg-blue-100 text-blue-600{% endif %}">
+<span class="material-symbols-outlined text-[20px]">{% if delivery.status == 'skipped' %}event_busy{% else %}local_shipping{% endif %}</span>
+</div>
+<div>
+<p class="text-sm font-semibold">{{ delivery.label }}</p>
+<p class="text-xs text-[#617589] dark:text-gray-400">{{ delivery.get_status_display }} â€¢ {{ delivery.created_at|date:"M d, Y" }}</p>
+{% if 'Water Cans' in delivery.label and delivery.status != 'delivered' and delivery.delivery_otp %}
+<p class="text-xs text-primary font-semibold mt-1">Delivery OTP: {{ delivery.delivery_otp }}</p>
+{% elif 'Water Cans' in delivery.label and delivery.otp_verified_at %}
+<p class="text-xs text-green-600 dark:text-green-400 font-semibold mt-1">OTP verified</p>
+{% endif %}
+</div>
+</div>
+{% empty %}
+<p class="text-sm text-[#617589] dark:text-gray-400">No delivery records yet.</p>
+{% endfor %}
+</div>
+</section>
+</div>
+</div>
+</div>
+</main>
+</div>
+
+<script>
+    (function () {
+        const form = document.querySelector("form[method='post']");
+        const radios = document.querySelectorAll('input[name="delivery_type"]');
+        const skipCard = document.getElementById("skip-card");
+        const waterCard = document.getElementById("water-card");
+        const skipTitle = document.getElementById("skip-title");
+        const waterTitle = document.getElementById("water-title");
+        const skipFields = document.getElementById("skip-fields");
+        const waterFields = document.getElementById("water-fields");
+        const submitButton = document.getElementById("submit-button");
+        const vendorLabel = document.getElementById("vendor-label");
+        const vendorInput = document.getElementById("courier_name");
+        const paymentMethodRadios = document.querySelectorAll('input[name="payment_method"]');
+        const paymentAmountInput = document.getElementById("payment_amount");
+        const qrWrap = document.getElementById("water-qr-wrap");
+        const qrImage = document.getElementById("water-qr-image");
+        const referenceWrap = document.getElementById("online-reference-wrap");
+        const upiId = "{{ water_upi_id }}";
+
+        function updateWaterPaymentUI() {
+            const selected = document.querySelector('input[name="payment_method"]:checked');
+            const isOnline = !selected || selected.value === "online";
+            if (qrWrap) qrWrap.classList.toggle("hidden", !isOnline);
+            if (referenceWrap) referenceWrap.classList.toggle("hidden", !isOnline);
+        }
+
+        function updateQrFromAmount() {
+            if (!qrImage || !paymentAmountInput) return;
+            const rawAmount = paymentAmountInput.value && Number(paymentAmountInput.value) > 0
+                ? Number(paymentAmountInput.value).toFixed(2)
+                : "50.00";
+            const upiUri = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent("Smart Residential")}&am=${rawAmount}&cu=INR&tn=${encodeURIComponent("Water Booking")}`;
+            qrImage.src = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(upiUri)}`;
+        }
+
+        function getCookie(name) {
+            const cookieValue = document.cookie
+                .split(";")
+                .map((cookie) => cookie.trim())
+                .find((cookie) => cookie.startsWith(`${name}=`));
+            return cookieValue ? decodeURIComponent(cookieValue.split("=").slice(1).join("=")) : null;
+        }
+
+        function syncCsrfToken() {
+            if (!form) return;
+            const csrfInput = form.querySelector('input[name="csrfmiddlewaretoken"]');
+            const csrfCookie = getCookie("csrftoken");
+            if (csrfInput && csrfCookie) {
+                csrfInput.value = csrfCookie;
+            }
+        }
+
+        function setMode(value) {
+            const isSkip = value === "skip";
+            skipCard.classList.toggle("border-primary", isSkip);
+            skipCard.classList.toggle("bg-primary/5", isSkip);
+            skipCard.classList.toggle("border-[#e5e7eb]", !isSkip);
+            waterCard.classList.toggle("border-primary", !isSkip);
+            waterCard.classList.toggle("bg-primary/5", !isSkip);
+            waterCard.classList.toggle("border-[#e5e7eb]", isSkip);
+            skipTitle.classList.toggle("text-primary", isSkip);
+            waterTitle.classList.toggle("text-primary", !isSkip);
+            waterTitle.classList.toggle("text-[#617589]", isSkip);
+            waterTitle.classList.toggle("dark:text-gray-400", isSkip);
+            skipFields.classList.toggle("hidden", !isSkip);
+            waterFields.classList.toggle("hidden", isSkip);
+            submitButton.textContent = isSkip ? "Create Skip Request" : "Schedule Water Delivery";
+            vendorLabel.textContent = isSkip ? "Vendor / Note Source" : "Water Vendor (Optional)";
+            vendorInput.placeholder = isSkip ? "e.g. Local dairy agent" : "e.g. Mineral Water Co.";
+            if (!isSkip) {
+                updateWaterPaymentUI();
+                updateQrFromAmount();
+            }
+        }
+
+        radios.forEach((radio) => {
+            radio.addEventListener("change", () => setMode(radio.value));
+        });
+        paymentMethodRadios.forEach((radio) => {
+            radio.addEventListener("change", updateWaterPaymentUI);
+        });
+        if (paymentAmountInput) {
+            paymentAmountInput.addEventListener("input", updateQrFromAmount);
+        }
+
+        syncCsrfToken();
+        if (form) {
+            form.addEventListener("submit", syncCsrfToken);
+        }
+        window.addEventListener("pageshow", syncCsrfToken);
+
+        const checked = document.querySelector('input[name="delivery_type"]:checked');
+        setMode(checked ? checked.value : "skip");
+    })();
+</script>
+</body>
+</html>
+
+

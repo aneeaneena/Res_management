@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Manage Deliveries - Admin Panel</title>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts: Inter -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#135bec",
+                        "primary-dark": "#0f4bc4",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            font-size: 24px;
+        }
+        /* Custom scrollbar for better look in admin panels */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-[#0d121b] dark:text-white font-display overflow-hidden">
+{% include "resident/_toast.html" %}
+<div class="flex h-screen w-full">
+<!-- SIDEBAR -->
+<aside class="w-64 flex-shrink-0 bg-white dark:bg-[#1e2736] border-r border-[#e7ebf3] dark:border-slate-700 flex flex-col justify-between overflow-y-auto">
+<div class="flex flex-col">
+<!-- Sidebar Header -->
+<div class="p-6">
+<div class="flex items-center gap-3">
+<div class="bg-center bg-no-repeat bg-cover rounded-full size-10 shadow-sm" data-alt="Admin profile picture placeholder" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA-CYiKo2PMJQlY8EW8EMxthqxOFMo4Kae4wn5C0jn_J-ENgjVrgS5cOMN7McdjNRl-f-D5RsNsXacZ71ENyb2Dp5aS3HZOHZHXymDDfd_tc8rRR7ohKzUx0CSGo5wmBU-Wemow3eJ7JgN7Oo_isOiJUPL3Kbd8hDg9Em_pwhIjTxaJ5fvDmcS063-_EG7sbj44ae-EFI-TcEYURadXBvhBNl9889p26DKw-pKL-qrH87iGBJuqbCNV8atLDItrjdUw6LJFsGhO18k");'></div>
+<div class="flex flex-col">
+<h1 class="text-[#0d121b] dark:text-white text-base font-bold leading-normal">Oakwood Res</h1>
+<p class="text-[#4c669a] dark:text-slate-400 text-xs font-medium uppercase tracking-wider">Admin Panel</p>
+</div>
+</div>
+</div>
+<!-- Navigation Links -->
+<nav class="flex flex-col gap-2 px-4">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#4c669a] dark:text-slate-300 hover:bg-[#f8f9fc] dark:hover:bg-slate-700 transition-colors group" href="{% url 'admin_dashboard' %}">
+<span class="material-symbols-outlined text-[#4c669a] dark:text-slate-300 group-hover:text-primary">dashboard</span>
+<p class="text-sm font-medium leading-normal">Dashboard</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#4c669a] dark:text-slate-300 hover:bg-[#f8f9fc] dark:hover:bg-slate-700 transition-colors group" href="{% url 'approve_residents' %}">
+<span class="material-symbols-outlined text-[#4c669a] dark:text-slate-300 group-hover:text-primary">group</span>
+<p class="text-sm font-medium leading-normal">Residents</p>
+</a>
+<!-- Active Link -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary text-white shadow-md shadow-blue-500/20" href="{% url 'manage_deliveries' %}">
+<span class="material-symbols-outlined text-white">local_shipping</span>
+<p class="text-sm font-medium leading-normal">Deliveries</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#4c669a] dark:text-slate-300 hover:bg-[#f8f9fc] dark:hover:bg-slate-700 transition-colors group" href="{% url 'assign_maintenance' %}">
+<span class="material-symbols-outlined text-[#4c669a] dark:text-slate-300 group-hover:text-primary">home_repair_service</span>
+<p class="text-sm font-medium leading-normal">Maintenance</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#4c669a] dark:text-slate-300 hover:bg-[#f8f9fc] dark:hover:bg-slate-700 transition-colors group" href="{% url 'manage_amenities' %}">
+<span class="material-symbols-outlined text-[#4c669a] dark:text-slate-300 group-hover:text-primary">apartment</span>
+<p class="text-sm font-medium leading-normal">Units</p>
+</a>
+</nav>
+</div>
+<!-- Sidebar Footer -->
+<div class="p-4 border-t border-[#e7ebf3] dark:border-slate-700">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#4c669a] dark:text-slate-300 hover:bg-[#f8f9fc] dark:hover:bg-slate-700 transition-colors" href="{% url 'manage_notices' %}">
+<span class="material-symbols-outlined">settings</span>
+<p class="text-sm font-medium leading-normal">Settings</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#4c669a] dark:text-slate-300 hover:bg-[#f8f9fc] dark:hover:bg-slate-700 transition-colors" href="{% url 'logout' %}">
+<span class="material-symbols-outlined">logout</span>
+<p class="text-sm font-medium leading-normal">Log Out</p>
+</a>
+</div>
+</aside>
+<!-- MAIN CONTENT -->
+<div class="flex-1 flex flex-col h-full overflow-hidden relative">
+<!-- Top Navbar -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#e7ebf3] dark:border-slate-700 bg-white dark:bg-[#1e2736] px-8 py-4 shrink-0">
+<div class="flex items-center gap-4">
+<!-- Mobile Menu Trigger (Visible only on small screens theoretically, but hidden for desktop focus) -->
+</div>
+<!-- Search Bar -->
+<div class="flex-1 max-w-lg mx-auto relative hidden md:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xl">search</span>
+<input class="w-full h-10 pl-10 pr-4 bg-[#f8f9fc] dark:bg-slate-800 border-none rounded-lg text-sm text-[#0d121b] dark:text-white placeholder-slate-400 focus:ring-2 focus:ring-primary/50" placeholder="Search anything..." type="text"/>
+</div>
+<div class="flex items-center gap-4 justify-end flex-1">
+<div class="flex gap-2">
+<button class="flex items-center justify-center rounded-lg size-10 hover:bg-[#e7ebf3] dark:hover:bg-slate-700 text-[#0d121b] dark:text-white transition-colors relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2.5 right-2.5 size-2 bg-red-500 rounded-full border border-white dark:border-[#1e2736]"></span>
+</button>
+<button class="flex items-center justify-center rounded-lg size-10 hover:bg-[#e7ebf3] dark:hover:bg-slate-700 text-[#0d121b] dark:text-white transition-colors">
+<span class="material-symbols-outlined">help</span>
+</button>
+</div>
+<div class="bg-center bg-no-repeat bg-cover rounded-full size-9 border-2 border-white dark:border-slate-600 shadow-sm cursor-pointer" data-alt="User profile picture" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC23kIXOWy70lb74QUBkhDBBeR95X0AxqJAShJVwROEovmKwEjXVcjLhhkMXV1trvIViwR_d66hQdsYEe6XLCxHvzj1i1aM2OsU47bFfF-RXOKvOdeNUYmP7kq6O_yHR_nRjurTD_11vs8BNQg2qYt6sOvWTQ7DRbNI5gq19VOdP9qgbpWuMuIKanEgxuyTfT6482wwBLyJR6rLQZQaHP4QFcX6uguYwrZJGrtNhQljqp1QeCvsfw9AsTZKhnl-bjyqolgDqoP0UJA");'></div>
+</div>
+</header>
+<!-- Scrollable Page Content -->
+<main class="flex-1 overflow-y-auto bg-background-light dark:bg-background-dark p-6 md:p-8">
+<div class="max-w-[1200px] mx-auto flex flex-col gap-6">
+<!-- Breadcrumbs -->
+<div class="flex items-center gap-2 text-sm">
+<a class="text-[#4c669a] hover:text-primary transition-colors font-medium" href="{% url 'admin_dashboard' %}">Home</a>
+<span class="text-[#4c669a] font-medium">/</span>
+<span class="text-[#0d121b] dark:text-white font-medium">Deliveries</span>
+</div>
+<!-- Header & Actions -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div class="flex flex-col gap-1">
+<h1 class="text-[#0d121b] dark:text-white text-3xl font-bold tracking-tight">Manage Deliveries</h1>
+<p class="text-[#4c669a] dark:text-slate-400 text-base">Track and update incoming packages for residents.</p>
+</div>
+<a class="flex items-center gap-2 bg-primary hover:bg-primary-dark text-white px-5 py-2.5 rounded-lg shadow-lg shadow-blue-500/30 transition-all active:scale-95 font-medium text-sm" href="{% url 'manage_deliveries' %}?new=1#new-delivery">
+<span class="material-symbols-outlined text-[20px]">add</span>
+<span>Log New Delivery</span>
+</a>
+</div>
+{% if show_new_form %}
+<div class="bg-white dark:bg-[#1e2736] rounded-xl border border-[#e7ebf3] dark:border-slate-700 shadow-sm p-4" id="new-delivery">
+<form class="grid grid-cols-1 md:grid-cols-2 gap-4" method="post">
+{% csrf_token %}
+<input type="hidden" name="action" value="create"/>
+<div>
+<label class="text-sm font-medium text-slate-700 dark:text-slate-300">Resident</label>
+<select class="mt-1 w-full h-11 rounded-lg bg-white dark:bg-slate-800 border border-[#e7ebf3] dark:border-slate-600 text-sm" name="resident_id" required>
+<option value="" selected>Select resident</option>
+{% for resident in residents %}
+<option value="{{ resident.id }}">{{ resident.username }}</option>
+{% endfor %}
+</select>
+</div>
+<div>
+<label class="text-sm font-medium text-slate-700 dark:text-slate-300">Carrier</label>
+<input class="mt-1 w-full h-11 rounded-lg bg-white dark:bg-slate-800 border border-[#e7ebf3] dark:border-slate-600 text-sm px-3" name="carrier" placeholder="e.g. Amazon, UPS" required type="text"/>
+</div>
+<div>
+<label class="text-sm font-medium text-slate-700 dark:text-slate-300">Label</label>
+<input class="mt-1 w-full h-11 rounded-lg bg-white dark:bg-slate-800 border border-[#e7ebf3] dark:border-slate-600 text-sm px-3" name="label" placeholder="Package description" required type="text"/>
+</div>
+<div>
+<label class="text-sm font-medium text-slate-700 dark:text-slate-300">Status</label>
+<select class="mt-1 w-full h-11 rounded-lg bg-white dark:bg-slate-800 border border-[#e7ebf3] dark:border-slate-600 text-sm" name="status">
+<option value="pending" selected>Pending</option>
+<option value="ready">Ready</option>
+<option value="picked_up">Picked Up</option>
+<option value="delivered">Delivered</option>
+<option value="skipped">Skipped</option>
+</select>
+</div>
+<div class="md:col-span-2 flex justify-end">
+<button class="h-11 px-5 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-primary-dark transition-colors" type="submit">Create Delivery</button>
+</div>
+</form>
+</div>
+{% endif %}
+<!-- Stats Cards -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<div class="flex flex-col gap-1 rounded-xl p-5 bg-white dark:bg-[#1e2736] border border-[#e7ebf3] dark:border-slate-700 shadow-sm">
+<div class="flex justify-between items-start">
+<p class="text-[#4c669a] dark:text-slate-400 text-sm font-medium">Pending Pickup</p>
+<span class="bg-amber-50 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400 p-1 rounded-md">
+<span class="material-symbols-outlined text-[20px]">inventory_2</span>
+</span>
+</div>
+<p class="text-[#0d121b] dark:text-white text-3xl font-bold mt-2">{{ pending_count }}</p>
+<p class="text-xs text-[#4c669a] dark:text-slate-500 mt-1">+2 since yesterday</p>
+</div>
+<div class="flex flex-col gap-1 rounded-xl p-5 bg-white dark:bg-[#1e2736] border border-[#e7ebf3] dark:border-slate-700 shadow-sm">
+<div class="flex justify-between items-start">
+<p class="text-[#4c669a] dark:text-slate-400 text-sm font-medium">Collected Today</p>
+<span class="bg-emerald-50 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400 p-1 rounded-md">
+<span class="material-symbols-outlined text-[20px]">check_circle</span>
+</span>
+</div>
+<p class="text-[#0d121b] dark:text-white text-3xl font-bold mt-2">{{ collected_count }}</p>
+<p class="text-xs text-emerald-600 dark:text-emerald-400 mt-1 font-medium">↑ 12% increase</p>
+</div>
+<div class="flex flex-col gap-1 rounded-xl p-5 bg-white dark:bg-[#1e2736] border border-[#e7ebf3] dark:border-slate-700 shadow-sm">
+<div class="flex justify-between items-start">
+<p class="text-[#4c669a] dark:text-slate-400 text-sm font-medium">Returned</p>
+<span class="bg-red-50 text-red-600 dark:bg-red-900/30 dark:text-red-400 p-1 rounded-md">
+<span class="material-symbols-outlined text-[20px]">keyboard_return</span>
+</span>
+</div>
+<p class="text-[#0d121b] dark:text-white text-3xl font-bold mt-2">{{ returned_count }}</p>
+<p class="text-xs text-[#4c669a] dark:text-slate-500 mt-1">Requires attention</p>
+</div>
+</div>
+<!-- Filters and Search -->
+<form class="flex flex-col md:flex-row gap-4 bg-white dark:bg-[#1e2736] p-4 rounded-xl border border-[#e7ebf3] dark:border-slate-700 shadow-sm" method="get">
+<div class="flex-1 relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+<input class="w-full h-11 pl-10 pr-4 bg-white dark:bg-slate-800 border border-[#e7ebf3] dark:border-slate-600 rounded-lg text-sm focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all dark:text-white dark:placeholder-slate-400" name="q" placeholder="Search by tracking # or resident..." type="text" value="{{ query }}"/>
+</div>
+<div class="flex gap-4 overflow-x-auto pb-1 md:pb-0">
+<select class="h-11 px-4 pr-8 bg-white dark:bg-slate-800 border border-[#e7ebf3] dark:border-slate-600 rounded-lg text-sm text-[#0d121b] dark:text-white focus:ring-2 focus:ring-primary focus:border-primary outline-none min-w-[160px] appearance-none cursor-pointer" name="status" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBNtPUbczGYtcuU-NIln68y2EDd-MwQj0Q3hxSXn-SGSK_QhkPyR1GscaAw11jG4qRN9k8y2gY5yiVwXO1g8oGM1Xg-Gyr0NjLQ9CfyFRhAbpCQjZRZ-pJEY5EibIP_0xqC1beYsOtTfpUepA9lq6zf2RmBc0kEClAbMvyoABBdn2k50Nv_orkJi0Fhh0egFIraz8uDg5AhmnrN2GE3OVDI4KbP8Ns9ye5s9OEeZZQX2vYhePec72ZON8g4OCOioeZnYfXBWu-vaNU'); background-repeat: no-repeat; background-position: right 0.7rem top 50%; background-size: 0.65rem auto;">
+<option value="">All Statuses</option>
+<option value="pending" {% if status_filter == "pending" %}selected{% endif %}>Pending</option>
+<option value="ready" {% if status_filter == "ready" %}selected{% endif %}>Ready</option>
+<option value="picked_up" {% if status_filter == "picked_up" %}selected{% endif %}>Picked Up</option>
+<option value="delivered" {% if status_filter == "delivered" %}selected{% endif %}>Delivered</option>
+<option value="skipped" {% if status_filter == "skipped" %}selected{% endif %}>Skipped</option>
+</select>
+<select class="h-11 px-4 pr-8 bg-white dark:bg-slate-800 border border-[#e7ebf3] dark:border-slate-600 rounded-lg text-sm text-[#0d121b] dark:text-white focus:ring-2 focus:ring-primary focus:border-primary outline-none min-w-[160px] appearance-none cursor-pointer" name="range" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDronX9SWO38lai0-aaJUOv1DvhnshCrG7o7_406dlaCEVMN5eRiP8_B6mESWSYjrJ9cuzenYrH7ay0WRsZY1-T935zrHhb8gUL8dGNqoLQYWER-Fln5jLRpfKYjhYJ3xMRPWhEybHPS5kWnBBnqaSp8JYnvx_lUx4jJRULT8ZADYyPlttZtXbe-dagF1tJKCuY9iOtY8dwrp_sGNkTrW2hEVrnm-fezNM31yMPho0YtKwI7mqtlU3kraqPJRPniiFdwGa-KPv0DSQ'); background-repeat: no-repeat; background-position: right 0.7rem top 50%; background-size: 0.65rem auto;">
+<option value="">All Time</option>
+<option value="30" {% if range_filter == "30" %}selected{% endif %}>Last 30 Days</option>
+<option value="7" {% if range_filter == "7" %}selected{% endif %}>Last 7 Days</option>
+<option value="today" {% if range_filter == "today" %}selected{% endif %}>Today</option>
+</select>
+<button class="h-11 px-4 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-primary-dark transition-colors" type="submit">Apply</button>
+</div>
+</form>
+<!-- Data Table -->
+<div class="bg-white dark:bg-[#1e2736] rounded-xl border border-[#e7ebf3] dark:border-slate-700 shadow-sm overflow-hidden flex flex-col">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-[#f8f9fc] dark:bg-slate-800 border-b border-[#e7ebf3] dark:border-slate-700">
+<th class="py-4 px-6 text-xs font-semibold uppercase text-[#4c669a] dark:text-slate-400 tracking-wider">Tracking ID</th>
+<th class="py-4 px-6 text-xs font-semibold uppercase text-[#4c669a] dark:text-slate-400 tracking-wider">Resident</th>
+<th class="py-4 px-6 text-xs font-semibold uppercase text-[#4c669a] dark:text-slate-400 tracking-wider">Unit</th>
+<th class="py-4 px-6 text-xs font-semibold uppercase text-[#4c669a] dark:text-slate-400 tracking-wider">Carrier</th>
+<th class="py-4 px-6 text-xs font-semibold uppercase text-[#4c669a] dark:text-slate-400 tracking-wider">Arrival Date</th>
+<th class="py-4 px-6 text-xs font-semibold uppercase text-[#4c669a] dark:text-slate-400 tracking-wider">Status</th>
+<th class="py-4 px-6 text-xs font-semibold uppercase text-[#4c669a] dark:text-slate-400 tracking-wider text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-[#e7ebf3] dark:divide-slate-700">
+{% if deliveries %}
+{% for delivery in deliveries %}
+<tr class="hover:bg-[#f8f9fc] dark:hover:bg-slate-800 transition-colors group">
+<td class="py-4 px-6">
+<span class="text-primary font-medium text-sm">#TRK-{{ delivery.id }}</span>
+</td>
+<td class="py-4 px-6">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-slate-200 dark:bg-slate-600 flex items-center justify-center text-xs font-bold text-slate-500">
+{{ delivery.resident.username|slice:":2"|upper }}
+</div>
+<span class="text-[#0d121b] dark:text-white text-sm font-medium">{{ delivery.resident.username }}</span>
+</div>
+</td>
+<td class="py-4 px-6 text-sm text-[#0d121b] dark:text-slate-300">{{ delivery.unit|default:"-" }}</td>
+<td class="py-4 px-6 text-sm text-[#0d121b] dark:text-slate-300">{{ delivery.carrier }}</td>
+<td class="py-4 px-6 text-sm text-[#4c669a] dark:text-slate-400">{{ delivery.created_at|date:"M d, Y" }}</td>
+<td class="py-4 px-6">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold {% if delivery.status == 'pending' or delivery.status == 'ready' %}bg-amber-50 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300 border border-amber-200 dark:border-amber-800{% elif delivery.status == 'picked_up' or delivery.status == 'delivered' %}bg-emerald-50 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800{% else %}bg-red-50 text-red-700 dark:bg-red-900/40 dark:text-red-300 border border-red-200 dark:border-red-800{% endif %}">
+<span class="size-1.5 rounded-full {% if delivery.status == 'pending' or delivery.status == 'ready' %}bg-amber-500{% elif delivery.status == 'picked_up' or delivery.status == 'delivered' %}bg-emerald-500{% else %}bg-red-500{% endif %}"></span>
+{{ delivery.status|title }}
+</span>
+</td>
+<td class="py-4 px-6 text-right">
+<form class="inline-flex items-center gap-2" method="post">
+{% csrf_token %}
+<input type="hidden" name="action" value="update_status"/>
+<input type="hidden" name="delivery_id" value="{{ delivery.id }}"/>
+<select class="h-8 rounded-md bg-white dark:bg-slate-800 border border-[#e7ebf3] dark:border-slate-600 text-xs px-2" name="status">
+<option value="pending" {% if delivery.status == "pending" %}selected{% endif %}>Pending</option>
+<option value="ready" {% if delivery.status == "ready" %}selected{% endif %}>Ready</option>
+<option value="picked_up" {% if delivery.status == "picked_up" %}selected{% endif %}>Picked Up</option>
+<option value="delivered" {% if delivery.status == "delivered" %}selected{% endif %}>Delivered</option>
+<option value="skipped" {% if delivery.status == "skipped" %}selected{% endif %}>Skipped</option>
+</select>
+<button class="px-3 py-1.5 rounded bg-primary text-white text-xs font-medium hover:bg-primary-dark transition-colors" type="submit">Update</button>
+</form>
+</td>
+</tr>
+{% endfor %}
+{% else %}
+<tr>
+<td class="py-4 px-6 text-sm text-slate-500 dark:text-slate-400" colspan="7">No deliveries found.</td>
+</tr>
+{% endif %}
+</tbody>
+</table>
+</div>
+<!-- Pagination Footer -->
+<div class="px-6 py-4 border-t border-[#e7ebf3] dark:border-slate-700 flex items-center justify-between">
+<span class="text-sm text-[#4c669a] dark:text-slate-400">Showing <strong>1-5</strong> of <strong>48</strong> deliveries</span>
+<div class="flex gap-2">
+<button class="px-3 py-1.5 rounded border border-[#e7ebf3] dark:border-slate-600 text-sm text-[#4c669a] dark:text-slate-300 hover:bg-[#f8f9fc] dark:hover:bg-slate-700 transition-colors disabled:opacity-50">Previous</button>
+<button class="px-3 py-1.5 rounded bg-primary text-white text-sm font-medium shadow-sm">1</button>
+<button class="px-3 py-1.5 rounded border border-[#e7ebf3] dark:border-slate-600 text-sm text-[#4c669a] dark:text-slate-300 hover:bg-[#f8f9fc] dark:hover:bg-slate-700 transition-colors">2</button>
+<button class="px-3 py-1.5 rounded border border-[#e7ebf3] dark:border-slate-600 text-sm text-[#4c669a] dark:text-slate-300 hover:bg-[#f8f9fc] dark:hover:bg-slate-700 transition-colors">3</button>
+<span class="px-2 text-[#4c669a]">...</span>
+<button class="px-3 py-1.5 rounded border border-[#e7ebf3] dark:border-slate-600 text-sm text-[#4c669a] dark:text-slate-300 hover:bg-[#f8f9fc] dark:hover:bg-slate-700 transition-colors">8</button>
+<button class="px-3 py-1.5 rounded border border-[#e7ebf3] dark:border-slate-600 text-sm text-[#4c669a] dark:text-slate-300 hover:bg-[#f8f9fc] dark:hover:bg-slate-700 transition-colors">Next</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</div>
+</body></html>

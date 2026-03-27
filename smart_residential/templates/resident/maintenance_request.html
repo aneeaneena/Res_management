@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Raise Maintenance Request - Residential Management System</title>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts: Inter -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .active-nav {
+            background-color: #f0f2f4;
+            color: #111418;
+        }
+        .dark .active-nav {
+            background-color: #1f2937;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-[#111418] dark:text-gray-100">
+{% include 'resident/_toast.html' %}
+<div class="flex flex-col min-h-screen">
+<!-- TopNavBar -->
+<header class="sticky top-0 z-50 flex items-center justify-between whitespace-nowrap border-b border-solid border-[#f0f2f4] dark:border-gray-800 bg-white dark:bg-background-dark px-10 py-3">
+<div class="flex items-center gap-4 text-[#111418] dark:text-white">
+<div class="size-6 text-primary">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M36.7273 44C33.9891 44 31.6043 39.8386 30.3636 33.69C29.123 39.8386 26.7382 44 24 44C21.2618 44 18.877 39.8386 17.6364 33.69C16.3957 39.8386 14.0109 44 11.2727 44C7.25611 44 4 35.0457 4 24C4 12.9543 7.25611 4 11.2727 4C14.0109 4 16.3957 8.16144 17.6364 14.31C18.877 8.16144 21.2618 4 24 4C26.7382 4 29.123 8.16144 30.3636 14.31C31.6043 8.16144 33.9891 4 36.7273 4C40.7439 4 44 12.9543 44 24C44 35.0457 40.7439 44 36.7273 44Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="text-lg font-bold leading-tight tracking-[-0.015em]">Residential Management System</h2>
+</div>
+<div class="flex flex-1 justify-end gap-6 items-center">
+<label class="flex flex-col min-w-40 !h-10 max-w-64">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full bg-[#f0f2f4] dark:bg-gray-800">
+<div class="text-[#617589] flex items-center justify-center pl-4">
+<span class="material-symbols-outlined text-[20px]">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 border-none bg-transparent focus:outline-0 focus:ring-0 text-[#111418] dark:text-white placeholder:text-[#617589] px-4 pl-2 text-sm font-normal" placeholder="Search requests..." value=""/>
+</div>
+</label>
+<div class="flex gap-2">
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-[#f0f2f4] dark:bg-gray-800 text-[#111418] dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-[#f0f2f4] dark:bg-gray-800 text-[#111418] dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border border-gray-200 dark:border-gray-700" data-alt="User avatar profile picture" style='background-image: url("{% if resident_profile and resident_profile.profile_picture %}{{ resident_profile.profile_picture.url }}{% else %}https://lh3.googleusercontent.com/aida-public/AB6AXuBJ9zLAQ3J3KStOKEmpu2TBfYp6u-aoNgyQpjzIofydcYiClhbcS9ND9ZmAlWEdp6RW88sMFWLMaSdAOIeiuXhtOU2wgNQR4LiwNuGN6484Dxq9jbCQn9TZeILnjZQ7kSeZ5woRZTUVbJEcPKnkzxh8xtZNmDfshAW9WPOdrU-tKWiqqcJ70AO8BLeWo9dNT-DtNhPnwGXaNGaa0H9kw_DhDx5p7pYksyBZqoOFHQGyF7GFVoMdyf3BDiuJ08TCN7DAa6Dl96WFWzU{% endif %}");'></div>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden">
+<!-- SideNavBar -->
+<aside class="w-64 shrink-0 bg-white dark:bg-background-dark border-r border-[#f0f2f4] dark:border-gray-800 hidden md:flex flex-col justify-between p-4">
+<div class="flex flex-col gap-6">
+<div class="flex flex-col px-3">
+<h1 class="text-[#111418] dark:text-white text-base font-semibold leading-normal">Resident Portal</h1>
+<p class="text-[#617589] text-sm font-normal leading-normal">
+{% if resident_profile %}
+Unit {{ resident_profile.unit|default:"Not set" }} - {{ resident_profile.building|default:"Building" }}
+{% else %}
+Unit not set
+{% endif %}
+</p>
+</div>
+<nav class="flex flex-col gap-1">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#617589] hover:bg-[#f0f2f4] dark:hover:bg-gray-800 transition-colors" href="{% url 'resident_dashboard' %}">
+<span class="material-symbols-outlined">dashboard</span>
+<p class="text-sm font-medium leading-normal">Dashboard</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg active-nav" href="{% url 'maintenance_request' %}">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">home_repair_service</span>
+<p class="text-sm font-medium leading-normal">Maintenance</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#617589] hover:bg-[#f0f2f4] dark:hover:bg-gray-800 transition-colors" href="{% url 'delivery_status' %}">
+<span class="material-symbols-outlined">payments</span>
+<p class="text-sm font-medium leading-normal">Payments</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#617589] hover:bg-[#f0f2f4] dark:hover:bg-gray-800 transition-colors" href="{% url 'amenities' %}">
+<span class="material-symbols-outlined">settings</span>
+<p class="text-sm font-medium leading-normal">Settings</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#617589] hover:bg-[#f0f2f4] dark:hover:bg-gray-800 hover:text-red-600 transition-colors" href="{% url 'logout' %}">
+<span class="material-symbols-outlined text-red-400">logout</span>
+<p class="text-sm font-medium leading-normal">Sign Out</p>
+</a>
+</nav>
+<div class="mt-8 px-3">
+<p class="text-[10px] font-bold text-[#617589] uppercase tracking-wider mb-4">Emergency Support</p>
+<div class="bg-primary/10 dark:bg-primary/20 rounded-xl p-4 border border-primary/20">
+<p class="text-xs text-primary font-bold mb-1">Need urgent help?</p>
+<p class="text-xs text-[#617589] dark:text-gray-400 mb-3">For immediate water or electrical emergencies.</p>
+<a class="text-sm font-bold text-primary flex items-center gap-2" href="tel:5550123">
+<span class="material-symbols-outlined text-sm">call</span>
+                                (555) 0123-456
+                            </a>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 overflow-y-auto px-4 md:px-12 py-8 bg-background-light dark:bg-background-dark">
+<div class="max-w-[800px] mx-auto">
+<!-- PageHeading -->
+<div class="flex flex-col gap-2 mb-8">
+<h2 class="text-[#111418] dark:text-white text-3xl font-black leading-tight tracking-[-0.033em]">Raise a New Maintenance Request</h2>
+<p class="text-[#617589] text-base font-normal leading-normal">Provide details about the issue to help our team assist you faster</p>
+</div>
+<!-- Existing Requests -->
+<div class="bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-[#dbe0e6] dark:border-gray-800 overflow-hidden mb-8">
+<div class="px-6 py-4 border-b border-[#f0f2f4] dark:border-gray-800">
+<h3 class="text-base font-bold">Your Maintenance Requests</h3>
+</div>
+<div class="p-6 space-y-4">
+{% if maintenance_requests %}
+{% for req in maintenance_requests %}
+<div class="p-4 rounded-lg border {% if selected_request and selected_request.id == req.id %}border-primary bg-primary/5 dark:bg-primary/10{% else %}border-[#e5e7eb] dark:border-gray-700{% endif %}">
+<div class="flex items-center justify-between mb-1">
+<p class="font-semibold text-sm">{{ req.title }}</p>
+<span class="text-xs font-bold px-2 py-0.5 rounded
+{% if req.status == 'in_progress' %}bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400
+{% elif req.status == 'completed' %}bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400
+{% elif req.status == 'on_hold' %}bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300
+{% else %}bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-300{% endif %}">
+{{ req.get_status_display }}
+</span>
+</div>
+<p class="text-xs text-[#617589] dark:text-gray-400">{{ req.description|default:"No description provided." }}</p>
+<div class="mt-2 flex items-center justify-between gap-4">
+<p class="text-[10px] text-gray-400">Created {{ req.created_at|date:"M d, Y H:i" }}</p>
+<a href="{% url 'maintenance_request' %}?request_id={{ req.id }}" class="text-xs font-bold text-primary hover:underline">View Updates</a>
+</div>
+</div>
+{% endfor %}
+{% else %}
+<p class="text-sm text-gray-500">No maintenance requests yet.</p>
+{% endif %}
+</div>
+</div>
+{% if selected_request %}
+<div class="bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-[#dbe0e6] dark:border-gray-800 overflow-hidden mb-8">
+<div class="px-6 py-4 border-b border-[#f0f2f4] dark:border-gray-800">
+<h3 class="text-base font-bold">Task Update Status</h3>
+<p class="text-sm text-[#617589] dark:text-gray-400 mt-1">{{ selected_request.title }}</p>
+</div>
+<div class="p-6 space-y-4">
+<div class="rounded-lg p-4 bg-[#f0f7ff] dark:bg-blue-900/20 border border-primary/20">
+<p class="text-sm font-bold">
+Current Status:
+<span class="text-primary">{{ selected_request.get_status_display }}</span>
+</p>
+<p class="text-xs text-[#617589] dark:text-gray-400 mt-1">Created on {{ selected_request.created_at|date:"M d, Y H:i" }}</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="rounded-lg border border-[#e5e7eb] dark:border-gray-700 p-4">
+<p class="text-xs font-bold uppercase tracking-wider text-[#617589] dark:text-gray-400 mb-2">Assigned Staff</p>
+<p class="text-sm font-medium">
+{% if selected_request.assigned_to %}{{ selected_request.assigned_to.username }}{% else %}Not assigned yet{% endif %}
+</p>
+</div>
+<div class="rounded-lg border border-[#e5e7eb] dark:border-gray-700 p-4">
+<p class="text-xs font-bold uppercase tracking-wider text-[#617589] dark:text-gray-400 mb-2">Due Date</p>
+<p class="text-sm font-medium">
+{% if selected_request.due_date %}{{ selected_request.due_date|date:"M d, Y H:i" }}{% else %}Not set{% endif %}
+</p>
+</div>
+</div>
+<div class="rounded-lg border border-[#e5e7eb] dark:border-gray-700 p-4">
+<p class="text-xs font-bold uppercase tracking-wider text-[#617589] dark:text-gray-400 mb-2">Technician Comments</p>
+<p class="text-sm whitespace-pre-wrap">{{ selected_request.technician_comments|default:"No updates from maintenance staff yet." }}</p>
+</div>
+<div class="rounded-lg border border-[#e5e7eb] dark:border-gray-700 p-4">
+<p class="text-xs font-bold uppercase tracking-wider text-[#617589] dark:text-gray-400 mb-2">Completion OTP</p>
+{% if selected_request.otp_verified_at %}
+<p class="text-sm font-semibold text-green-600 dark:text-green-400">Verified on {{ selected_request.otp_verified_at|date:"M d, Y H:i" }}</p>
+{% elif selected_request.completion_otp %}
+<p class="text-sm">Share this OTP with maintenance staff when work is completed:</p>
+<p class="mt-2 inline-flex rounded-md bg-primary/10 px-3 py-1.5 text-base font-black tracking-wider text-primary">{{ selected_request.completion_otp }}</p>
+{% else %}
+<p class="text-sm text-[#617589] dark:text-gray-400">OTP not available yet.</p>
+{% endif %}
+</div>
+{% if selected_request.evidence_file %}
+<div class="rounded-lg border border-[#e5e7eb] dark:border-gray-700 p-4">
+<p class="text-xs font-bold uppercase tracking-wider text-[#617589] dark:text-gray-400 mb-2">Evidence File</p>
+<a href="{% url 'resident_view_evidence' selected_request.id %}" target="_blank" rel="noopener" class="text-sm font-bold text-primary hover:underline">View Uploaded Evidence</a>
+</div>
+{% endif %}
+</div>
+</div>
+{% endif %}
+<!-- Form Container -->
+<div class="bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-[#dbe0e6] dark:border-gray-800 overflow-hidden">
+<form method="POST" class="p-6 md:p-8 flex flex-col gap-6">
+{% csrf_token %}
+<!-- Category Dropdown -->
+<div class="flex flex-col gap-2">
+<label class="text-[#111418] dark:text-white text-sm font-semibold">Issue Category</label>
+<div class="relative">
+<select name="category" class="form-input w-full appearance-none rounded-lg border border-[#dbe0e6] dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-3 text-[#111418] dark:text-white focus:border-primary focus:ring-1 focus:ring-primary transition-all">
+<option disabled="" selected="" value="">Select a category</option>
+<option value="plumbing">Plumbing (Leaks, Clogs, Water Pressure)</option>
+<option value="electrical">Electrical (Outlets, Lighting, Breakers)</option>
+<option value="hvac">HVAC (Heating, Cooling, Airflow)</option>
+<option value="appliance">Appliance (Fridge, Stove, Dishwasher)</option>
+<option value="other">Other</option>
+</select>
+<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-[#617589]">
+<span class="material-symbols-outlined">expand_more</span>
+</div>
+</div>
+</div>
+<!-- Description Textarea -->
+<div class="flex flex-col gap-2">
+<label class="text-[#111418] dark:text-white text-sm font-semibold">Describe the Issue</label>
+<textarea name="description" class="form-input w-full min-h-[160px] rounded-lg border border-[#dbe0e6] dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-3 text-[#111418] dark:text-white placeholder:text-[#617589] focus:border-primary focus:ring-1 focus:ring-primary transition-all resize-none" placeholder="Please provide details about what is wrong, when it started, and where in the unit it is located..."></textarea>
+</div>
+<!-- Priority Toggle -->
+<div class="flex flex-col gap-2">
+<label class="text-[#111418] dark:text-white text-sm font-semibold">Urgency Level</label>
+<div class="flex gap-4">
+<label class="flex-1 cursor-pointer group">
+<input checked="" class="peer hidden" name="priority" type="radio" value="normal"/>
+<div class="flex items-center justify-center gap-2 px-4 py-3 rounded-lg border border-[#dbe0e6] dark:border-gray-700 peer-checked:border-primary peer-checked:bg-primary/5 dark:peer-checked:bg-primary/20 transition-all group-hover:bg-gray-50 dark:group-hover:bg-gray-800">
+<span class="text-sm font-medium">Normal</span>
+</div>
+</label>
+<label class="flex-1 cursor-pointer group">
+<input class="peer hidden" name="priority" type="radio" value="urgent"/>
+<div class="flex items-center justify-center gap-2 px-4 py-3 rounded-lg border border-[#dbe0e6] dark:border-gray-700 peer-checked:border-red-500 peer-checked:bg-red-50 dark:peer-checked:bg-red-900/20 transition-all group-hover:bg-gray-50 dark:group-hover:bg-gray-800">
+<span class="text-sm font-medium">Urgent</span>
+</div>
+</label>
+</div>
+</div>
+<!-- Image Upload Zone -->
+<div class="flex flex-col gap-2">
+<label class="text-[#111418] dark:text-white text-sm font-semibold">Upload Photos (Optional)</label>
+<div class="border-2 border-dashed border-[#dbe0e6] dark:border-gray-700 rounded-xl p-8 flex flex-col items-center justify-center text-center hover:border-primary/50 transition-colors cursor-pointer bg-gray-50/50 dark:bg-gray-800/30">
+<div class="bg-primary/10 p-3 rounded-full text-primary mb-3">
+<span class="material-symbols-outlined text-3xl">cloud_upload</span>
+</div>
+<p class="text-[#111418] dark:text-white font-medium">Click to upload or drag and drop</p>
+<p class="text-[#617589] text-xs mt-1">PNG, JPG or JPEG (max. 10MB per file)</p>
+</div>
+</div>
+<!-- Form Actions -->
+<div class="flex items-center justify-end gap-3 mt-4 pt-6 border-t border-[#f0f2f4] dark:border-gray-800">
+<a href="{% url 'resident_dashboard' %}" class="px-6 py-2.5 rounded-lg text-sm font-bold text-[#617589] hover:bg-[#f0f2f4] dark:hover:bg-gray-800 transition-colors">
+                                    Cancel
+                                </a>
+<button class="px-8 py-2.5 rounded-lg bg-primary text-white text-sm font-bold hover:bg-primary/90 shadow-lg shadow-primary/20 transition-all active:scale-[0.98]" type="submit">
+                                    Submit Request
+                                </button>
+</div>
+</form>
+</div>
+<!-- Additional Info / Help Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8">
+<div class="flex items-start gap-4 p-4 rounded-xl bg-blue-50 dark:bg-blue-900/10 border border-blue-100 dark:border-blue-800/30">
+<span class="material-symbols-outlined text-primary">info</span>
+<div>
+<h4 class="text-sm font-bold text-[#111418] dark:text-white mb-1">What happens next?</h4>
+<p class="text-xs text-[#617589] dark:text-gray-400">Our maintenance team will review your request within 24 hours. You'll receive a notification when a technician is assigned.</p>
+</div>
+</div>
+<div class="flex items-start gap-4 p-4 rounded-xl bg-green-50 dark:bg-green-900/10 border border-green-100 dark:border-green-800/30">
+<span class="material-symbols-outlined text-green-600">verified_user</span>
+<div>
+<h4 class="text-sm font-bold text-[#111418] dark:text-white mb-1">Authorization to Enter</h4>
+<p class="text-xs text-[#617589] dark:text-gray-400">By submitting this request, you authorize our maintenance staff to enter your unit during standard business hours (9AM-5PM).</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</div>
+</body></html>
+

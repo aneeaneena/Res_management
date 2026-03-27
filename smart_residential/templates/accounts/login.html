@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Login - Smart Residential Management System</title>
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&display=swap"
+        rel="stylesheet" />
+
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#137fec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                    },
+                    fontFamily: {
+                        display: ["Inter"]
+                    },
+                },
+            },
+        }
+    </script>
+
+    <style type="text/tailwindcss">
+        body { font-family: "Inter", sans-serif }
+        .material-symbols-outlined { font-size: 20px }
+    </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen flex flex-col">
+
+    <header
+        class="sticky top-0 z-50 w-full border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-6 py-3 flex justify-between items-center">
+        <div class="flex items-center gap-3">
+            <div class="bg-primary text-white p-1.5 rounded-lg">
+                <span class="material-symbols-outlined">domain</span>
+            </div>
+            <h2 class="text-lg font-bold">Smart Residential Management System</h2>
+        </div>
+    </header>
+
+    <main class="flex-grow flex items-center justify-center p-6">
+        <div class="w-full max-w-[420px] bg-white dark:bg-slate-900 p-8 rounded-xl shadow-lg space-y-6">
+
+            <div class="text-center">
+                <h2 class="text-3xl font-bold">Welcome Back</h2>
+                <p class="text-slate-500">Login to continue</p>
+            </div>
+
+            {% if error %}
+            <div class="flex gap-2 bg-red-100 text-red-600 p-3 rounded-lg text-sm">
+                <span class="material-symbols-outlined">error</span>
+                <p>{{ error }}</p>
+            </div>
+            {% endif %}
+
+            <form method="POST" class="space-y-4" autocomplete="off">
+                {% csrf_token %}
+
+                <!-- USERNAME -->
+                <div>
+                    <label class="text-sm font-semibold">Username</label>
+                    <input type="text" name="username" required
+                        autocomplete="off" autocapitalize="none" spellcheck="false"
+                        class="w-full mt-1 px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary outline-none">
+                </div>
+
+                <!-- PASSWORD -->
+                <div>
+                    <label class="text-sm font-semibold">Password</label>
+                    <input type="password" name="password" required
+                        autocomplete="new-password"
+                        class="w-full mt-1 px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary outline-none">
+                </div>
+
+                <button type="submit"
+                    class="w-full bg-primary text-white py-3 rounded-lg font-bold hover:bg-primary/90 transition">
+                    Login to Dashboard
+                </button>
+            </form>
+
+            <div class="text-center text-sm text-slate-500">
+                Don’t have an account?
+                <a href="{% url 'register' %}"
+                    class="text-primary font-bold hover:underline">Register</a>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="text-center text-xs text-slate-400 py-4">
+        © 2026 Smart Residential Management System
+    </footer>
+
+    <script>
+        // Keep login fields empty on page load even if browser tries to autofill.
+        document.addEventListener("DOMContentLoaded", function () {
+            const usernameInput = document.querySelector('input[name="username"]');
+            const passwordInput = document.querySelector('input[name="password"]');
+            if (usernameInput) usernameInput.value = "";
+            if (passwordInput) passwordInput.value = "";
+            setTimeout(function () {
+                if (usernameInput) usernameInput.value = "";
+                if (passwordInput) passwordInput.value = "";
+            }, 150);
+        });
+
+        // Freeze browser history navigation while on login page.
+        // Users must authenticate via this page to reach dashboards again.
+        (function () {
+            history.pushState({ loginGuard: true }, "", window.location.href);
+            window.addEventListener("pageshow", function (event) {
+                if (event.persisted) {
+                    window.location.reload();
+                }
+            });
+            window.addEventListener("popstate", function () {
+                history.pushState({ loginGuard: true }, "", window.location.href);
+            });
+        })();
+    </script>
+</body>
+</html>

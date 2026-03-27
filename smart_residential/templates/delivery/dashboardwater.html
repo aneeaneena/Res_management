@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Security Delivery Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>
+    tailwind.config = {
+        darkMode: "class",
+        theme: {
+            extend: {
+                colors: {
+                    primary: "#137fec",
+                    "background-light": "#f6f7f8",
+                    "background-dark": "#101922",
+                    "surface-dark": "#1a2633",
+                },
+                fontFamily: {
+                    display: ["Inter", "sans-serif"],
+                },
+            },
+        },
+    };
+</script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-[#111418] dark:text-white min-h-screen">
+{% include "resident/_toast.html" %}
+<div class="max-w-7xl mx-auto px-4 md:px-8 py-8 flex flex-col gap-6">
+<div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+<div>
+<p class="text-sm text-[#617589] dark:text-gray-400">Security / Daily Deliveries</p>
+<h1 class="text-3xl font-black mt-1">Security Delivery Dashboard</h1>
+<p class="text-[#617589] dark:text-gray-400 mt-2">View today&apos;s water delivery list and the milk/newspaper resident list after removing the residents who submitted skip requests.</p>
+</div>
+<div class="flex items-center gap-3">
+<a class="size-10 rounded-full bg-cover bg-center border border-[#dbe0e6] dark:border-gray-700" href="{% url 'account_profile' %}" style='background-image: url("{% if user_profile and user_profile.profile_picture %}{{ user_profile.profile_picture.url }}{% else %}https://lh3.googleusercontent.com/aida-public/AB6AXuA3-TAyqAn61g1zARtw0JTe-v7DadsUzHT_5-4POl19VdfC1GcJcnC_hLhHM0itVBaoyjfuoMuP26GEHiBxGEUO8EDO451U2NsaG0fZajb64eHaxJAInMPXN0zIGQRBp5oHmCzRmAJvjIWLJN2SyV5eag_HHV3vAqyQyc01bo_yLqPsxTjK-sKoN7AcEObM2CmwxMi-tweadhR78RGyqjlThtCaX8vuRINy4AyJ7WQgQ4hs5gIBpNWg-hnJXBjNpmLJOG1P29RT9Ic{% endif %}");'></a>
+<div class="text-right">
+<p class="font-semibold">{{ request.user.username }}</p>
+<p class="text-sm text-[#617589] dark:text-gray-400">{{ today|date:"l, d M Y" }}</p>
+</div>
+<a class="rounded-xl bg-white dark:bg-surface-dark border border-[#dbe0e6] dark:border-gray-700 px-4 py-2 font-semibold hover:bg-gray-50 dark:hover:bg-gray-800" href="{% url 'account_profile' %}">Edit Profile</a>
+<a class="rounded-xl bg-white dark:bg-surface-dark border border-[#dbe0e6] dark:border-gray-700 px-4 py-2 font-semibold hover:bg-gray-50 dark:hover:bg-gray-800" href="{% url 'logout' %}">Logout</a>
+</div>
+</div>
+
+<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+<div class="rounded-2xl bg-white dark:bg-surface-dark border border-[#dbe0e6] dark:border-gray-700 p-5">
+<p class="text-sm text-[#617589] dark:text-gray-400">Residents Covered</p>
+<p class="text-3xl font-black mt-2">{{ counts.residents }}</p>
+</div>
+<div class="rounded-2xl bg-white dark:bg-surface-dark border border-[#dbe0e6] dark:border-gray-700 p-5">
+<p class="text-sm text-[#617589] dark:text-gray-400">Today&apos;s Water Deliveries</p>
+<p class="text-3xl font-black mt-2">{{ counts.water }}</p>
+</div>
+<div class="rounded-2xl bg-white dark:bg-surface-dark border border-[#dbe0e6] dark:border-gray-700 p-5">
+<p class="text-sm text-[#617589] dark:text-gray-400">Milk &amp; Newspaper To Deliver</p>
+<p class="text-3xl font-black mt-2">{{ counts.essentials }}</p>
+</div>
+<div class="rounded-2xl bg-white dark:bg-surface-dark border border-[#dbe0e6] dark:border-gray-700 p-5">
+<p class="text-sm text-[#617589] dark:text-gray-400">Skipped Today</p>
+<p class="text-3xl font-black mt-2">{{ counts.skipped }}</p>
+</div>
+</div>
+
+<div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+<section class="rounded-2xl overflow-hidden border border-[#dbe0e6] dark:border-gray-700 bg-white dark:bg-surface-dark">
+<div class="px-6 py-4 border-b border-[#dbe0e6] dark:border-gray-700">
+<h2 class="text-xl font-bold">Today&apos;s Water Delivery Residents</h2>
+<p class="text-sm text-[#617589] dark:text-gray-400">Residents who booked water for today.</p>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead class="bg-[#f8fafc] dark:bg-[#111827] text-xs uppercase text-[#617589] dark:text-gray-400">
+<tr>
+<th class="px-6 py-4">Resident</th>
+<th class="px-6 py-4">Unit</th>
+<th class="px-6 py-4">Booking</th>
+<th class="px-6 py-4">Status</th>
+<th class="px-6 py-4">Verify Delivery</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-[#e5e7eb] dark:divide-gray-800">
+{% for delivery in water_deliveries %}
+<tr>
+<td class="px-6 py-4 font-medium">{{ delivery.resident_name }}</td>
+<td class="px-6 py-4 text-sm text-[#617589] dark:text-gray-400">{% if delivery.building %}{{ delivery.building }}{% endif %} {% if delivery.unit %}{{ delivery.unit }}{% else %}Unit not set{% endif %}</td>
+<td class="px-6 py-4 text-sm">{{ delivery.label }}</td>
+<td class="px-6 py-4">
+<span class="inline-flex rounded-full px-3 py-1 text-xs font-semibold {% if delivery.status == 'delivered' %}bg-green-100 text-green-700{% elif delivery.status == 'ready' %}bg-blue-100 text-blue-700{% else %}bg-amber-100 text-amber-700{% endif %}">
+{{ delivery.get_status_display }}
+</span>
+</td>
+<td class="px-6 py-4">
+{% if delivery.status != 'delivered' %}
+<form method="post" class="flex items-center gap-2">
+{% csrf_token %}
+<input type="hidden" name="action" value="verify_delivery_otp">
+<input type="hidden" name="delivery_id" value="{{ delivery.id }}">
+<input name="delivery_otp" type="text" maxlength="6" pattern="[0-9]{6}" inputmode="numeric" placeholder="6-digit OTP" class="w-28 rounded-lg border border-[#dbe0e6] dark:border-gray-700 bg-white dark:bg-[#111827] px-2 py-1.5 text-sm focus:ring-2 focus:ring-primary" required>
+<button type="submit" class="rounded-lg bg-primary px-3 py-1.5 text-xs font-semibold text-white hover:bg-blue-600 transition-colors">Verify</button>
+</form>
+{% else %}
+<span class="text-xs text-green-600 dark:text-green-400 font-semibold">Verified</span>
+{% endif %}
+</td>
+</tr>
+{% empty %}
+<tr><td class="px-6 py-6 text-sm text-[#617589] dark:text-gray-400" colspan="5">No water deliveries scheduled for today.</td></tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+</section>
+
+<section class="rounded-2xl overflow-hidden border border-[#dbe0e6] dark:border-gray-700 bg-white dark:bg-surface-dark">
+<div class="px-6 py-4 border-b border-[#dbe0e6] dark:border-gray-700">
+<h2 class="text-xl font-bold">Milk &amp; Newspaper Delivery Residents</h2>
+<p class="text-sm text-[#617589] dark:text-gray-400">Residents who should receive daily milk and newspaper today after excluding skip requests.</p>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead class="bg-[#f8fafc] dark:bg-[#111827] text-xs uppercase text-[#617589] dark:text-gray-400">
+<tr>
+<th class="px-6 py-4">Resident</th>
+<th class="px-6 py-4">Unit</th>
+<th class="px-6 py-4">Items</th>
+<th class="px-6 py-4">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-[#e5e7eb] dark:divide-gray-800">
+{% for resident in essentials_deliveries %}
+<tr>
+<td class="px-6 py-4 font-medium">{{ resident.resident_name }}</td>
+<td class="px-6 py-4 text-sm text-[#617589] dark:text-gray-400">{% if resident.building %}{{ resident.building }}{% endif %} {% if resident.unit %}{{ resident.unit }}{% else %}Unit not set{% endif %}</td>
+<td class="px-6 py-4 text-sm">{{ resident.item_label }}</td>
+<td class="px-6 py-4"><span class="inline-flex rounded-full bg-blue-100 text-blue-700 px-3 py-1 text-xs font-semibold">Scheduled</span></td>
+</tr>
+{% empty %}
+<tr><td class="px-6 py-6 text-sm text-[#617589] dark:text-gray-400" colspan="4">No residents require milk/newspaper delivery today.</td></tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+</section>
+</div>
+
+<section class="rounded-2xl overflow-hidden border border-[#dbe0e6] dark:border-gray-700 bg-white dark:bg-surface-dark">
+<div class="px-6 py-4 border-b border-[#dbe0e6] dark:border-gray-700">
+<h2 class="text-xl font-bold">Today&apos;s Skipped Residents</h2>
+<p class="text-sm text-[#617589] dark:text-gray-400">Residents removed from daily milk/newspaper delivery because they submitted skip requests.</p>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead class="bg-[#f8fafc] dark:bg-[#111827] text-xs uppercase text-[#617589] dark:text-gray-400">
+<tr>
+<th class="px-6 py-4">Resident</th>
+<th class="px-6 py-4">Unit</th>
+<th class="px-6 py-4">Skip Entry</th>
+<th class="px-6 py-4">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-[#e5e7eb] dark:divide-gray-800">
+{% for delivery in skipped_deliveries %}
+<tr>
+<td class="px-6 py-4 font-medium">{{ delivery.resident_name }}</td>
+<td class="px-6 py-4 text-sm text-[#617589] dark:text-gray-400">{% if delivery.building %}{{ delivery.building }}{% endif %} {% if delivery.unit %}{{ delivery.unit }}{% else %}Unit not set{% endif %}</td>
+<td class="px-6 py-4 text-sm">{{ delivery.label }}</td>
+<td class="px-6 py-4"><span class="inline-flex rounded-full bg-red-100 text-red-700 px-3 py-1 text-xs font-semibold">{{ delivery.get_status_display }}</span></td>
+</tr>
+{% empty %}
+<tr><td class="px-6 py-6 text-sm text-[#617589] dark:text-gray-400" colspan="4">No skip requests for today.</td></tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+</section>
+</div>
+</body>
+</html>

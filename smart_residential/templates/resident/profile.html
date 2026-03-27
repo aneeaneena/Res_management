@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Resident Profile - ResiManager</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined { font-size: 24px; }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-[#111418] dark:text-white transition-colors duration-200">
+{% include 'resident/_toast.html' %}
+<div class="flex h-screen overflow-hidden">
+<!-- Side Navigation -->
+<aside class="w-64 border-r border-[#dbe0e6] dark:border-[#2d3748] bg-white dark:bg-[#1a222c] flex flex-col">
+<div class="p-6 flex flex-col h-full">
+<div class="flex items-center gap-3 mb-10 px-2">
+<div class="bg-primary rounded-lg p-1.5 flex items-center justify-center text-white">
+<span class="material-symbols-outlined">apartment</span>
+</div>
+<div>
+<h1 class="text-[#111418] dark:text-white text-lg font-bold leading-none">ResiManager</h1>
+<p class="text-[#617589] dark:text-gray-400 text-xs mt-1">Resident Portal</p>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#617589] dark:text-gray-400 hover:bg-[#f0f2f4] dark:hover:bg-[#2d3748] transition-colors" href="{% url 'resident_dashboard' %}">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/10 text-primary" href="{% url 'profile' %}">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">group</span>
+<span class="text-sm font-semibold">Residents</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#617589] dark:text-gray-400 hover:bg-[#f0f2f4] dark:hover:bg-[#2d3748] transition-colors" href="{% url 'delivery_status' %}">
+<span class="material-symbols-outlined">payments</span>
+<span class="text-sm font-medium">Billing</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#617589] dark:text-gray-400 hover:bg-[#f0f2f4] dark:hover:bg-[#2d3748] transition-colors" href="{% url 'maintenance_request' %}">
+<span class="material-symbols-outlined">build</span>
+<span class="text-sm font-medium">Maintenance</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#617589] dark:text-gray-400 hover:bg-[#f0f2f4] dark:hover:bg-[#2d3748] transition-colors" href="{% url 'amenities' %}">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-sm font-medium">Settings</span>
+</a>
+</nav>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#617589] dark:text-gray-400 hover:bg-[#f0f2f4] dark:hover:bg-[#2d3748] hover:text-red-600 transition-colors" href="{% url 'logout' %}">
+<span class="material-symbols-outlined text-red-400">logout</span>
+<span class="text-sm font-medium">Sign Out</span>
+</a>
+<div class="mt-auto pt-6 border-t border-[#dbe0e6] dark:border-[#2d3748]">
+<div class="flex items-center gap-3 px-2">
+<div class="size-10 rounded-full bg-cover bg-center" data-alt="Resident profile photo" style="background-image: url('{% if resident_profile and resident_profile.profile_picture %}{{ resident_profile.profile_picture.url }}{% else %}https://lh3.googleusercontent.com/aida-public/AB6AXuCe-tiKFK-aris7yH0vbIUViz0v50AGhZ9uyAoC1TVES4OiT5pdzuMztD1K6y-0I95HWi0s2P3fbdnWLQknYUm2hxob2gFqVtW85c0xDCBZu1q4RvFdhRkBQ6cZFAgDWn1ERsRmDEfakk21gbzcijczLdmv-4Rl1LFIl4Lo4RfMruP0AVPnk4b515lJ3N5p_YwSmmHh7bfFV0O93PRHqQFFTvt06ewVr19v2cxPU1NlFtySdZ3Aoeq6Ttz7QC0XypfWXGS2SIGkncc{% endif %}');"></div>
+<div class="flex flex-col">
+<span class="text-sm font-semibold text-[#111418] dark:text-white">{{ request.user.username }}</span>
+<span class="text-xs text-[#617589] dark:text-gray-400">Resident</span>
+</div>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col overflow-y-auto">
+<!-- Top Navigation Bar -->
+<header class="sticky top-0 z-10 flex items-center justify-between bg-white/80 dark:bg-[#1a222c]/80 backdrop-blur-md border-b border-[#f0f2f4] dark:border-[#2d3748] px-8 py-3">
+<div class="flex items-center gap-6">
+<h2 class="text-[#111418] dark:text-white text-lg font-bold tracking-tight flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">person</span>
+                        Resident Profile
+                    </h2>
+<div class="relative w-64">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#617589] text-sm">search</span>
+<input class="w-full bg-[#f0f2f4] dark:bg-[#2d3748] border-none rounded-lg py-2 pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary/50 text-[#111418] dark:text-white placeholder-[#617589]" placeholder="Search residents..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<button class="p-2 rounded-lg bg-[#f0f2f4] dark:bg-[#2d3748] text-[#111418] dark:text-white hover:bg-gray-200 transition-colors relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-1.5 right-1.5 size-2 bg-red-500 rounded-full border-2 border-white"></span>
+</button>
+<button class="p-2 rounded-lg bg-[#f0f2f4] dark:bg-[#2d3748] text-[#111418] dark:text-white hover:bg-gray-200 transition-colors">
+<span class="material-symbols-outlined">help</span>
+</button>
+</div>
+</header>
+<!-- Page Content -->
+<div class="p-8 max-w-5xl mx-auto w-full space-y-6">
+{% if force_complete %}
+<div class="p-4 rounded-lg bg-amber-100 text-amber-800 text-sm font-medium">
+Complete your resident profile to continue. Required fields: Unit, Building, Phone, Emergency Contact Name, Emergency Contact Phone, and Email.
+</div>
+{% endif %}
+<!-- Profile Header Card -->
+<div class="bg-white dark:bg-[#1a222c] p-6 rounded-xl border border-[#dbe0e6] dark:border-[#2d3748] shadow-sm">
+<div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+<div class="flex gap-6 items-center">
+<div class="relative">
+<div class="size-28 rounded-full border-4 border-[#f0f2f4] dark:border-[#2d3748] bg-cover bg-center overflow-hidden" data-alt="Resident portrait" style="background-image: url('{% if resident_profile and resident_profile.profile_picture %}{{ resident_profile.profile_picture.url }}{% else %}https://lh3.googleusercontent.com/aida-public/AB6AXuA_kLB5Qes4WQqAsfHsBYKccnZuqIzBo8D99HCArQ4glAEcEAfDvjQAhsWyjLP1IAsPg1pNU6m2S-Z-08NLqb2fXrc34BznFRtGneCkPb0c4yNxXoPk9p2p_OUhqmmlz_MvqJyxDdKNc5UuS0QSBbNZbxci1pYEDPHPnwISK09_qfZr-q8X_A7Y3zn7CZ_v5GNd7bvRZfHnijRh5ChZtVojpFgY3i7AO1SRrxeHaxT9aa9c99RcYmtKqHiYE3-yIoR1rBLUBhYbkJw{% endif %}');"></div>
+<div class="absolute bottom-1 right-1 size-5 bg-green-500 rounded-full border-2 border-white dark:border-[#1a222c]"></div>
+</div>
+<div>
+<h3 class="text-2xl font-bold text-[#111418] dark:text-white">{{ request.user.username }}</h3>
+<div class="flex items-center gap-2 mt-1">
+<span class="text-[#617589] dark:text-gray-400 font-medium">RES-{{ request.user.id }}</span>
+<span class="size-1 bg-[#dbe0e6] rounded-full"></span>
+<span class="bg-primary/10 text-primary text-xs font-bold px-2 py-0.5 rounded uppercase">Active Resident</span>
+</div>
+<p class="text-[#617589] dark:text-gray-400 text-sm mt-2 flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">calendar_today</span>
+                                    Member since {{ request.user.date_joined|date:"M Y" }}
+                                </p>
+</div>
+</div>
+<div class="flex gap-3 w-full md:w-auto">
+<a href="#upload-profile-picture" class="flex-1 md:flex-none flex items-center justify-center gap-2 px-6 py-2.5 bg-[#f0f2f4] dark:bg-[#2d3748] hover:bg-[#e2e8f0] text-[#111418] dark:text-white font-bold rounded-lg transition-colors">
+<span class="material-symbols-outlined text-lg">photo_camera</span>
+                                Upload Photo
+                            </a>
+<a href="#edit-profile" class="flex-1 md:flex-none flex items-center justify-center gap-2 px-6 py-2.5 bg-primary hover:bg-primary/90 text-white font-bold rounded-lg transition-colors shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-lg">edit</span>
+                                Edit Profile
+                            </a>
+</div>
+</div>
+</div>
+<!-- Info Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Unit Details Section -->
+<div class="bg-white dark:bg-[#1a222c] rounded-xl border border-[#dbe0e6] dark:border-[#2d3748] shadow-sm overflow-hidden">
+<div class="px-6 py-4 border-b border-[#f0f2f4] dark:border-[#2d3748] flex items-center justify-between">
+<h4 class="text-base font-bold text-[#111418] dark:text-white">Unit Information</h4>
+<span class="material-symbols-outlined text-primary/60">home</span>
+</div>
+<div class="p-6 grid grid-cols-2 gap-y-6">
+<div class="space-y-1">
+<p class="text-[#617589] dark:text-gray-400 text-xs font-semibold uppercase tracking-wider">Apartment Number</p>
+<p class="text-[#111418] dark:text-white text-sm font-medium">
+{% if resident_profile and resident_profile.unit %}{{ resident_profile.unit }}{% else %}Not set{% endif %}
+</p>
+</div>
+<div class="space-y-1">
+<p class="text-[#617589] dark:text-gray-400 text-xs font-semibold uppercase tracking-wider">Building / Wing</p>
+<p class="text-[#111418] dark:text-white text-sm font-medium">
+{% if resident_profile and resident_profile.building %}{{ resident_profile.building }}{% else %}Not set{% endif %}
+</p>
+</div>
+<div class="space-y-1">
+<p class="text-[#617589] dark:text-gray-400 text-xs font-semibold uppercase tracking-wider">Move-in Date</p>
+<p class="text-[#111418] dark:text-white text-sm font-medium">October 15, 2022</p>
+</div>
+<div class="space-y-1">
+<p class="text-[#617589] dark:text-gray-400 text-xs font-semibold uppercase tracking-wider">Resident Type</p>
+<p class="text-[#111418] dark:text-white text-sm font-medium">Tenant</p>
+</div>
+<div class="space-y-1">
+<p class="text-[#617589] dark:text-gray-400 text-xs font-semibold uppercase tracking-wider">Floor</p>
+<p class="text-[#111418] dark:text-white text-sm font-medium">4th Floor</p>
+</div>
+<div class="space-y-1">
+<p class="text-[#617589] dark:text-gray-400 text-xs font-semibold uppercase tracking-wider">Status</p>
+<div class="flex items-center gap-1.5">
+<span class="size-2 bg-green-500 rounded-full"></span>
+<p class="text-[#111418] dark:text-white text-sm font-medium">Active</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Contact Details Section -->
+<div class="bg-white dark:bg-[#1a222c] rounded-xl border border-[#dbe0e6] dark:border-[#2d3748] shadow-sm overflow-hidden">
+<div class="px-6 py-4 border-b border-[#f0f2f4] dark:border-[#2d3748] flex items-center justify-between">
+<h4 class="text-base font-bold text-[#111418] dark:text-white">Contact Details</h4>
+<span class="material-symbols-outlined text-primary/60">contact_page</span>
+</div>
+<div class="p-6 space-y-6">
+<div class="flex items-center gap-4">
+<div class="size-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-xl">alternate_email</span>
+</div>
+<div>
+<p class="text-[#617589] dark:text-gray-400 text-xs font-semibold uppercase tracking-wider">Email Address</p>
+<p class="text-[#111418] dark:text-white text-sm font-medium">{{ request.user.email|default:"Not set" }}</p>
+</div>
+<span class="ml-auto material-symbols-outlined text-green-500 text-sm" title="Verified">verified</span>
+</div>
+<div class="flex items-center gap-4">
+<div class="size-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-xl">call</span>
+</div>
+<div>
+<p class="text-[#617589] dark:text-gray-400 text-xs font-semibold uppercase tracking-wider">Primary Phone</p>
+<p class="text-[#111418] dark:text-white text-sm font-medium">{% if resident_profile.phone %}{{ resident_profile.phone }}{% else %}Not set{% endif %}</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="size-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-xl">smartphone</span>
+</div>
+<div>
+<p class="text-[#617589] dark:text-gray-400 text-xs font-semibold uppercase tracking-wider">Work / Alternative</p>
+<p class="text-[#111418] dark:text-white text-sm font-medium">{% if resident_profile.emergency_phone %}{{ resident_profile.emergency_phone }}{% else %}Not set{% endif %}</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Emergency Contact Section -->
+<div class="bg-white dark:bg-[#1a222c] md:col-span-2 rounded-xl border border-[#dbe0e6] dark:border-[#2d3748] shadow-sm overflow-hidden">
+<div class="px-6 py-4 border-b border-[#f0f2f4] dark:border-[#2d3748] flex items-center justify-between">
+<h4 class="text-base font-bold text-[#111418] dark:text-white">Emergency Contact</h4>
+<span class="material-symbols-outlined text-red-400/80">emergency</span>
+</div>
+<div class="p-6">
+<div class="flex flex-col md:flex-row gap-8 items-center bg-red-50/50 dark:bg-red-900/10 p-6 rounded-xl border border-red-100 dark:border-red-900/30">
+<div class="flex items-center gap-4 flex-1">
+<div class="size-14 rounded-full bg-red-100 dark:bg-red-900/40 flex items-center justify-center text-red-600 dark:text-red-400">
+<span class="material-symbols-outlined text-3xl">medical_services</span>
+</div>
+<div>
+<p class="text-lg font-bold text-[#111418] dark:text-white">{% if resident_profile.emergency_name %}{{ resident_profile.emergency_name }}{% else %}Not set{% endif %}</p>
+<p class="text-sm font-medium text-red-600 dark:text-red-400">Relationship: Emergency Contact</p>
+</div>
+</div>
+<div class="h-px w-full md:w-px md:h-12 bg-red-200 dark:bg-red-900/40"></div>
+<div class="flex items-center gap-6 flex-1 justify-center md:justify-start">
+<div class="text-center md:text-left">
+<p class="text-[#617589] dark:text-gray-400 text-xs font-semibold uppercase tracking-wider mb-1">Emergency Phone</p>
+<p class="text-lg font-bold text-[#111418] dark:text-white">{% if resident_profile.emergency_phone %}{{ resident_profile.emergency_phone }}{% else %}Not set{% endif %}</p>
+</div>
+<button class="size-12 rounded-full bg-red-600 text-white flex items-center justify-center hover:bg-red-700 transition-colors shadow-lg shadow-red-200 dark:shadow-none">
+<span class="material-symbols-outlined">call</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- System Info Section -->
+<div class="bg-white dark:bg-[#1a222c] md:col-span-2 rounded-xl border border-[#dbe0e6] dark:border-[#2d3748] shadow-sm overflow-hidden">
+<div class="px-6 py-4 border-b border-[#f0f2f4] dark:border-[#2d3748] flex items-center justify-between">
+<h4 class="text-base font-bold text-[#111418] dark:text-white">System Information</h4>
+<span class="material-symbols-outlined text-[#617589]">info</span>
+</div>
+<div class="p-6 flex flex-wrap gap-8">
+<div>
+<p class="text-[#617589] dark:text-gray-400 text-xs font-semibold uppercase mb-1">Last Login</p>
+<p class="text-sm font-medium text-[#111418] dark:text-white">
+{% if request.user.last_login %}{{ request.user.last_login|date:"M d, Y H:i" }}{% else %}Not yet{% endif %}
+</p>
+</div>
+<div>
+<p class="text-[#617589] dark:text-gray-400 text-xs font-semibold uppercase mb-1">Created By</p>
+<p class="text-sm font-medium text-[#111418] dark:text-white">Self Registered</p>
+</div>
+<div>
+<p class="text-[#617589] dark:text-gray-400 text-xs font-semibold uppercase mb-1">Lease Document</p>
+{% if resident_profile.lease_file %}
+<a class="text-sm font-bold text-primary flex items-center gap-1 hover:underline" href="{{ resident_profile.lease_file.url }}" target="_blank" rel="noopener">
+<span class="material-symbols-outlined text-sm">description</span>
+                                    View Lease PDF
+                                </a>
+{% else %}
+<span class="text-sm text-[#617589]">No lease uploaded</span>
+{% endif %}
+</div>
+</div>
+</div>
+<!-- Edit Profile -->
+<div id="edit-profile" class="bg-white dark:bg-[#1a222c] md:col-span-2 rounded-xl border border-[#dbe0e6] dark:border-[#2d3748] shadow-sm overflow-hidden">
+<div class="px-6 py-4 border-b border-[#f0f2f4] dark:border-[#2d3748] flex items-center justify-between">
+<h4 class="text-base font-bold text-[#111418] dark:text-white">Edit Profile</h4>
+<span class="material-symbols-outlined text-primary/60">edit</span>
+</div>
+<form method="POST" class="p-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+{% csrf_token %}
+<input type="hidden" name="action" value="update_profile">
+<div>
+<label class="text-sm font-semibold">Email *</label>
+<input name="email" type="email" required class="w-full mt-1 px-3 py-2 rounded-lg bg-[#f0f2f4] dark:bg-[#2d3748] border-none" value="{{ request.user.email }}">
+</div>
+<div>
+<label class="text-sm font-semibold">Unit *</label>
+<input name="unit" required class="w-full mt-1 px-3 py-2 rounded-lg bg-[#f0f2f4] dark:bg-[#2d3748] border-none" value="{{ resident_profile.unit }}">
+</div>
+<div>
+<label class="text-sm font-semibold">Building *</label>
+<input name="building" required class="w-full mt-1 px-3 py-2 rounded-lg bg-[#f0f2f4] dark:bg-[#2d3748] border-none" value="{{ resident_profile.building }}">
+</div>
+<div>
+<label class="text-sm font-semibold">Phone *</label>
+<input name="phone" type="tel" required class="w-full mt-1 px-3 py-2 rounded-lg bg-[#f0f2f4] dark:bg-[#2d3748] border-none" value="{{ resident_profile.phone }}">
+</div>
+<div>
+<label class="text-sm font-semibold">Emergency Contact Name *</label>
+<input name="emergency_name" required class="w-full mt-1 px-3 py-2 rounded-lg bg-[#f0f2f4] dark:bg-[#2d3748] border-none" value="{{ resident_profile.emergency_name }}">
+</div>
+<div>
+<label class="text-sm font-semibold">Emergency Contact Phone *</label>
+<input name="emergency_phone" type="tel" required class="w-full mt-1 px-3 py-2 rounded-lg bg-[#f0f2f4] dark:bg-[#2d3748] border-none" value="{{ resident_profile.emergency_phone }}">
+</div>
+<div class="md:col-span-2 flex justify-end">
+<button class="px-4 py-2 bg-primary text-white rounded-lg font-bold">Save Changes</button>
+</div>
+</form>
+</div>
+<!-- Upload Profile Picture -->
+<div id="upload-profile-picture" class="bg-white dark:bg-[#1a222c] md:col-span-2 rounded-xl border border-[#dbe0e6] dark:border-[#2d3748] shadow-sm overflow-hidden">
+<div class="px-6 py-4 border-b border-[#f0f2f4] dark:border-[#2d3748] flex items-center justify-between">
+<h4 class="text-base font-bold text-[#111418] dark:text-white">Upload Profile Picture</h4>
+<span class="material-symbols-outlined text-primary/60">photo_camera</span>
+</div>
+<form method="POST" enctype="multipart/form-data" class="p-6 flex items-center gap-4">
+{% csrf_token %}
+<input type="hidden" name="action" value="upload_profile_picture">
+<input type="file" name="profile_picture" accept="image/*" class="text-sm" required>
+<button class="px-4 py-2 bg-primary text-white rounded-lg font-bold">Upload</button>
+</form>
+</div>
+<!-- Upload Lease -->
+<div class="bg-white dark:bg-[#1a222c] md:col-span-2 rounded-xl border border-[#dbe0e6] dark:border-[#2d3748] shadow-sm overflow-hidden">
+<div class="px-6 py-4 border-b border-[#f0f2f4] dark:border-[#2d3748] flex items-center justify-between">
+<h4 class="text-base font-bold text-[#111418] dark:text-white">Upload Lease</h4>
+<span class="material-symbols-outlined text-primary/60">upload</span>
+</div>
+<form method="POST" enctype="multipart/form-data" class="p-6 flex items-center gap-4">
+{% csrf_token %}
+<input type="hidden" name="action" value="upload_lease">
+<input type="file" name="lease_file" class="text-sm">
+<button class="px-4 py-2 bg-primary text-white rounded-lg font-bold">Upload</button>
+</form>
+</div>
+</div>
+</div>
+<footer class="mt-auto p-8 border-t border-[#f0f2f4] dark:border-[#2d3748] text-center">
+<p class="text-xs text-[#617589] dark:text-gray-500">© 2024 ResiManager Property Solutions. All rights reserved.</p>
+</footer>
+</main>
+</div>
+</body></html>

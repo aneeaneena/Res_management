@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Task Status Update - Facility Manager</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-[#111418] dark:text-white">
+{% include "resident/_toast.html" %}
+<div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+<!-- Top Navigation -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#e5e7eb] dark:border-b-[#2a3441] bg-white dark:bg-[#1a202c] px-4 md:px-10 py-3 sticky top-0 z-50">
+<div class="flex items-center gap-4 text-[#111418] dark:text-white">
+<div class="size-8 text-primary">
+<svg class="w-full h-full" fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M8.57829 8.57829C5.52816 11.6284 3.451 15.5145 2.60947 19.7452C1.76794 23.9758 2.19984 28.361 3.85056 32.3462C5.50128 36.3314 8.29667 39.7376 11.8832 42.134C15.4698 44.5305 19.6865 45.8096 24 45.8096C28.3135 45.8096 32.5302 44.5305 36.1168 42.134C39.7033 39.7375 42.4987 36.3314 44.1494 32.3462C45.8002 28.361 46.2321 23.9758 45.3905 19.7452C44.549 15.5145 42.4718 11.6284 39.4217 8.57829L24 24L8.57829 8.57829Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="text-lg font-bold leading-tight tracking-[-0.015em]">Facility Manager</h2>
+</div>
+<div class="flex flex-1 justify-end gap-8">
+<div class="hidden md:flex items-center gap-9">
+<a class="text-sm font-medium leading-normal hover:text-primary transition-colors" href="{% url 'maintenance_dashboard' %}">Dashboard</a>
+<a class="text-sm font-medium leading-normal text-primary" href="{% url 'maintenance_dashboard' %}">Tasks</a>
+<a class="text-sm font-medium leading-normal hover:text-primary transition-colors" href="{% url 'maintenance_dashboard' %}">Schedule</a>
+<a class="text-sm font-medium leading-normal hover:text-primary transition-colors" href="{% url 'maintenance_dashboard' %}">Reports</a>
+</div>
+<a class="hidden md:flex items-center justify-center rounded-full size-10 bg-background-light dark:bg-background-dark hover:bg-gray-200 dark:hover:bg-gray-700 text-[#111418] dark:text-white transition-colors" href="{% url 'logout' %}">
+<span class="material-symbols-outlined text-[20px]">logout</span>
+</a>
+<a class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-white dark:border-[#2a3441] shadow-sm cursor-pointer block" data-alt="User profile avatar image" href="{% url 'account_profile' %}" style='background-image: url("{% if user_profile and user_profile.profile_picture %}{{ user_profile.profile_picture.url }}{% else %}https://lh3.googleusercontent.com/aida-public/AB6AXuAdiXoLUBonD58ZRqG3LaKGNwZ82SkYh5a0bCnpzqe9uiz8PcnGHRJBsUTqvmCT6Oi-Goej4KuWKTl4tCLuDo_KertncAm8viTPoza_E63QVO4e_jzskDITX44nEU-1Uae8oaozJ0a8mS27x1lhkmIOf0j8qPLSWYf50Jl29fTa7_E4mKKb4_fitlYUEdaSW5x5H6IQqkMZ2ZjJ4rGZr_34AeYA0jfAyyTCTrKq9StPM2RsrGPoUH6jaqoF_xbpKfiKTQqJmz_pYDc{% endif %}");'>
+</a>
+</div>
+</header>
+<!-- Main Content Layout -->
+<main class="layout-container flex h-full grow flex-col py-8 px-4 md:px-40">
+<div class="flex flex-1 justify-center">
+<div class="layout-content-container flex flex-col max-w-[800px] flex-1 w-full gap-6">
+<!-- Page Heading Section -->
+<div class="flex flex-wrap items-end justify-between gap-4">
+<div class="flex flex-col gap-2">
+<div class="flex items-center gap-2">
+<span class="bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 text-xs font-bold px-2 py-1 rounded uppercase tracking-wide">ID #{{ task.id }}</span>
+<span class="text-primary text-sm font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">build</span> Maintenance
+                                </span>
+</div>
+<h1 class="text-3xl md:text-4xl font-black leading-tight tracking-[-0.033em]">Task Status Update</h1>
+<p class="text-[#617589] dark:text-gray-400 text-base font-normal">
+{{ task.title }}{% if task.location %} - {{ task.location }}{% endif %}
+</p>
+</div>
+<div class="hidden sm:block">
+<a class="flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-gray-900 dark:hover:text-white transition-colors" href="{% url 'maintenance_dashboard' %}">
+<span class="material-symbols-outlined">arrow_back</span> Back to Task List
+</a>
+</div>
+</div>
+<!-- Current Context Card -->
+<div class="w-full">
+<div class="bg-cover bg-center flex flex-col items-stretch justify-end rounded-xl overflow-hidden h-40 md:h-48 relative shadow-sm" data-alt="Abstract blue gradient background representing facility management" style='background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0) 100%), url("https://lh3.googleusercontent.com/aida-public/AB6AXuAS8iWTK87gP7Za7MjToK0IngRhONOCJ960yOalRTFVI0bTHUet1K0Pnv4jQ_Zg1jSOZ71EgGwS_jCWzC0imiPlkxVynVrdX_xSivBHaGk6UdVeQWzbHGpVylhrDK7TdkhwYQkFCXIMjVt3cZtxFqLZ838FxliQCkO74bAB0abhJcAvQEK23GC_aEDehaLWixwdqD_5JNzWETLuReuF41K4Y_OZE7e7B_fIa3_aePaINjKlqQLFOBevf-r8pqFyusquZ4M_lcSaPNg");'>
+<div class="flex w-full items-end justify-between gap-4 p-6 relative z-10">
+<div class="flex flex-col gap-1 text-white">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-yellow-400">pending</span>
+<p class="tracking-light text-xl md:text-2xl font-bold leading-tight">
+Current Status: {{ task.get_status_display }}
+</p>
+</div>
+<p class="text-white/80 text-sm font-medium">
+Created on {{ task.created_at|date:"M d, Y H:i" }}
+</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Form Container -->
+<form method="post" enctype="multipart/form-data" class="bg-white dark:bg-[#1a202c] rounded-xl shadow-sm border border-[#e5e7eb] dark:border-[#2a3441] p-6 md:p-8 flex flex-col gap-6">
+{% csrf_token %}
+<!-- Status Selector -->
+<div class="flex flex-col gap-2">
+<label class="text-base font-medium leading-normal flex items-center gap-2" for="status-select">
+<span class="material-symbols-outlined text-gray-400">tune</span> New Status
+                            </label>
+<div class="relative">
+<select class="form-select appearance-none w-full bg-background-light dark:bg-background-dark border border-[#dbe0e6] dark:border-[#4a5568] text-[#111418] dark:text-white rounded-lg p-4 pr-10 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all cursor-pointer text-base" id="status-select" name="status" required>
+<option disabled="" value="">Select a new status...</option>
+<option value="pending" {% if task.status == "pending" %}selected{% endif %}>Pending</option>
+<option value="in_progress" {% if task.status == "in_progress" %}selected{% endif %}>In Progress</option>
+<option value="completed" {% if task.status == "completed" %}selected{% endif %}>Completed</option>
+<option value="on_hold" {% if task.status == "on_hold" %}selected{% endif %}>On Hold</option>
+</select>
+<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-500">
+<span class="material-symbols-outlined">expand_more</span>
+</div>
+</div>
+<p class="text-xs text-gray-500 dark:text-gray-400 mt-1 pl-1">Changing status will notify the administration team.</p>
+</div>
+<!-- Technician Comments -->
+<div class="flex flex-col gap-2">
+<label class="text-base font-medium leading-normal flex items-center gap-2" for="comments">
+<span class="material-symbols-outlined text-gray-400">edit_note</span> Technician Comments
+                            </label>
+<textarea class="form-textarea w-full min-h-[140px] bg-background-light dark:bg-background-dark border border-[#dbe0e6] dark:border-[#4a5568] text-[#111418] dark:text-white rounded-lg p-4 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all resize-y text-base placeholder:text-gray-400" id="comments" name="comments" placeholder="Briefly describe work done, parts used, or reason for hold...">{{ task.technician_comments }}</textarea>
+</div>
+{% if not is_public_request %}
+<div class="flex flex-col gap-2">
+<label class="text-base font-medium leading-normal flex items-center gap-2" for="completion-otp">
+<span class="material-symbols-outlined text-gray-400">password</span> Resident Completion OTP
+</label>
+<input class="form-input w-full bg-background-light dark:bg-background-dark border border-[#dbe0e6] dark:border-[#4a5568] text-[#111418] dark:text-white rounded-lg p-4 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all text-base" id="completion-otp" name="completion_otp" type="text" maxlength="6" pattern="[0-9]{6}" inputmode="numeric" placeholder="Enter 6-digit OTP from resident"/>
+<p class="text-xs text-gray-500 dark:text-gray-400 mt-1 pl-1">Required only when setting status to Completed.</p>
+</div>
+{% endif %}
+<!-- Due Date -->
+<div class="flex flex-col gap-2">
+<label class="text-base font-medium leading-normal flex items-center gap-2" for="due-date">
+<span class="material-symbols-outlined text-gray-400">event</span> Due Date
+</label>
+<input class="form-input w-full bg-background-light dark:bg-background-dark border border-[#dbe0e6] dark:border-[#4a5568] text-[#111418] dark:text-white rounded-lg p-4 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all text-base" id="due-date" name="due_date" type="datetime-local" value="{% if task.due_date %}{{ task.due_date|date:'Y-m-d\\TH:i' }}{% endif %}"/>
+<p class="text-xs text-gray-500 dark:text-gray-400 mt-1 pl-1">Optional. Leave blank to keep current due date.</p>
+</div>
+<!-- Photo Upload (Optional) -->
+<div class="flex flex-col gap-2">
+<label class="text-base font-medium leading-normal flex justify-between items-center">
+<span class="flex items-center gap-2"><span class="material-symbols-outlined text-gray-400">add_a_photo</span> Evidence Photos</span>
+<span class="text-xs font-normal text-gray-400 bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded-full">Optional</span>
+</label>
+<label id="evidence-drop-zone" class="border-2 border-dashed border-[#dbe0e6] dark:border-[#4a5568] rounded-xl bg-background-light dark:bg-background-dark/50 p-8 flex flex-col items-center justify-center gap-3 hover:bg-gray-50 dark:hover:bg-[#2d3748] transition-colors cursor-pointer group">
+<input class="hidden" id="evidence-file" type="file" name="evidence_file" accept="image/*"/>
+<div class="size-12 rounded-full bg-white dark:bg-[#2d3748] flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary text-2xl">cloud_upload</span>
+</div>
+<div class="text-center">
+<p class="text-sm font-medium text-[#111418] dark:text-white">
+<span class="text-primary hover:underline">Click to upload</span> or drag and drop
+</p>
+<p class="text-xs text-gray-500 dark:text-gray-400 mt-1">PNG, JPG or JPEG (max. 10MB)</p>
+<p class="text-xs text-primary mt-1 hidden" id="evidence-file-name"></p>
+<p class="text-xs text-red-500 mt-1 hidden" id="evidence-file-error"></p>
+</div>
+</label>
+{% if task.evidence_file %}
+<div class="text-xs text-gray-500 dark:text-gray-400 mt-2">
+Current evidence: <a class="text-primary hover:underline" href="{{ task.evidence_file.url }}" target="_blank" rel="noopener">View file</a>
+</div>
+{% endif %}
+</div>
+<!-- Action Buttons -->
+<div class="flex flex-col-reverse sm:flex-row items-center justify-end gap-4 pt-4 border-t border-[#e5e7eb] dark:border-[#2a3441] mt-2">
+<a class="w-full sm:w-auto px-6 py-3 rounded-lg text-sm font-bold text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-center" href="{% url 'maintenance_dashboard' %}">
+Cancel
+</a>
+<button class="w-full sm:w-auto bg-primary hover:bg-blue-600 text-white px-8 py-3 rounded-lg text-sm font-bold shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2" type="submit">
+<span class="material-symbols-outlined text-[18px]">check_circle</span>
+Update Status
+</button>
+</div>
+</form>
+</div>
+</div>
+</div>
+</main>
+</div>
+<script>
+    (function () {
+        const statusSelect = document.getElementById("status-select");
+        const completionOtpInput = document.getElementById("completion-otp");
+        const input = document.getElementById("evidence-file");
+        const dropZone = document.getElementById("evidence-drop-zone");
+        const fileName = document.getElementById("evidence-file-name");
+        const fileError = document.getElementById("evidence-file-error");
+        if (!input || !dropZone || !fileName || !fileError) return;
+
+        function toggleOtpRequirement() {
+            if (!statusSelect || !completionOtpInput) return;
+            completionOtpInput.required = statusSelect.value === "completed";
+        }
+
+        function clearError() {
+            fileError.textContent = "";
+            fileError.classList.add("hidden");
+        }
+
+        function setError(message) {
+            fileError.textContent = message;
+            fileError.classList.remove("hidden");
+        }
+
+        function validateAndShowSelectedFile() {
+            clearError();
+            const selectedFile = input.files && input.files[0] ? input.files[0] : null;
+            if (!selectedFile) {
+                fileName.textContent = "";
+                fileName.classList.add("hidden");
+                return;
+            }
+
+            const isImage = (selectedFile.type || "").startsWith("image/");
+            const isWithinSize = selectedFile.size <= (10 * 1024 * 1024);
+            if (!isImage) {
+                input.value = "";
+                fileName.textContent = "";
+                fileName.classList.add("hidden");
+                setError("Please upload an image file (PNG/JPG/JPEG).");
+                return;
+            }
+            if (!isWithinSize) {
+                input.value = "";
+                fileName.textContent = "";
+                fileName.classList.add("hidden");
+                setError("File is too large. Maximum allowed size is 10MB.");
+                return;
+            }
+
+            fileName.textContent = "Selected: " + selectedFile.name;
+            fileName.classList.remove("hidden");
+        }
+
+        input.addEventListener("change", function () {
+            validateAndShowSelectedFile();
+        });
+
+        ["dragenter", "dragover"].forEach(function (eventName) {
+            dropZone.addEventListener(eventName, function (event) {
+                event.preventDefault();
+                event.stopPropagation();
+                dropZone.classList.add("border-primary");
+            });
+        });
+
+        ["dragleave", "drop"].forEach(function (eventName) {
+            dropZone.addEventListener(eventName, function (event) {
+                event.preventDefault();
+                event.stopPropagation();
+                dropZone.classList.remove("border-primary");
+            });
+        });
+
+        dropZone.addEventListener("drop", function (event) {
+            const files = event.dataTransfer && event.dataTransfer.files ? event.dataTransfer.files : null;
+            if (!files || files.length === 0) return;
+            input.files = files;
+            validateAndShowSelectedFile();
+        });
+
+        if (statusSelect && completionOtpInput) {
+            statusSelect.addEventListener("change", toggleOtpRequirement);
+            toggleOtpRequirement();
+        }
+    })();
+</script>
+</body></html>

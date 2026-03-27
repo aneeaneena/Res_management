@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Amenity Detail - Resident Portal</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                        "card-light": "#ffffff",
+                        "card-dark": "#1c2834",
+                        "text-main-light": "#111418",
+                        "text-main-dark": "#ffffff",
+                        "text-sec-light": "#617589",
+                        "text-sec-dark": "#9ca3af",
+                        "border-light": "#f0f2f4",
+                        "border-dark": "#2a3b4c",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar for better look in dashboard */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #475569;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-text-main-light dark:text-text-main-dark font-display antialiased overflow-hidden">
+<div class="flex h-screen w-full overflow-hidden">
+<!-- Side Navigation (Hidden on Mobile) -->
+<aside class="hidden md:flex flex-col w-64 border-r border-border-light dark:border-border-dark bg-card-light dark:bg-card-dark h-full">
+<div class="p-6">
+<div class="flex items-center gap-3">
+<div class="size-10 bg-primary/10 rounded-full flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">apartment</span>
+</div>
+<span class="font-bold text-lg tracking-tight">ResiPortal</span>
+</div>
+</div>
+<div class="px-4 py-2 flex flex-col gap-1 overflow-y-auto flex-1">
+<div class="flex gap-3 items-center p-3 mb-4 rounded-xl bg-background-light dark:bg-background-dark/50">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 shrink-0" data-alt="Portrait of user Alex" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDJoEyZw9G-FiS3bWYNZC0ofQy7jlzv0K4jvdqjnFByt0XCDE1xoMZdm8pL6Qe63x91jeJAjNme7eBW70wQyX2Y2qSPQ1v-jiY5MHHKP4IwcDYVuRNU3HlVhBcvHsfrpylg037ua4RRr1LmI8o-x8cudK94iH4lKyA5SDFy3wF1gKRnYAMcBREVwMZ464BYzVbZCkF6hXzSIXIBYfqxP9X-la7-gYeuA2hefPts50DfL7oyXi8Xb9Mj9SO5xdTAGppr4pM9yRYnfQ");'></div>
+<div class="flex flex-col overflow-hidden">
+<h1 class="text-sm font-bold truncate">Welcome, Alex</h1>
+<p class="text-text-sec-light dark:text-text-sec-dark text-xs truncate">Unit 402</p>
+</div>
+</div>
+<nav class="flex flex-col gap-1">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-sec-light dark:text-text-sec-dark hover:bg-background-light dark:hover:bg-background-dark/50 transition-colors" href="#">
+<span class="material-symbols-outlined text-[24px]">grid_view</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/10 text-primary" href="#">
+<span class="material-symbols-outlined text-[24px] fill-current">pool</span>
+<span class="text-sm font-bold">Amenities</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-sec-light dark:text-text-sec-dark hover:bg-background-light dark:hover:bg-background-dark/50 transition-colors" href="#">
+<span class="material-symbols-outlined text-[24px]">build</span>
+<span class="text-sm font-medium">Maintenance</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-sec-light dark:text-text-sec-dark hover:bg-background-light dark:hover:bg-background-dark/50 transition-colors" href="#">
+<span class="material-symbols-outlined text-[24px]">groups</span>
+<span class="text-sm font-medium">Community</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-sec-light dark:text-text-sec-dark hover:bg-background-light dark:hover:bg-background-dark/50 transition-colors" href="#">
+<span class="material-symbols-outlined text-[24px]">payments</span>
+<span class="text-sm font-medium">Payments</span>
+</a>
+</nav>
+</div>
+<div class="p-4 border-t border-border-light dark:border-border-dark">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-sec-light dark:text-text-sec-dark hover:bg-background-light dark:hover:bg-background-dark/50 transition-colors" href="#">
+<span class="material-symbols-outlined text-[24px]">settings</span>
+<span class="text-sm font-medium">Settings</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col h-full overflow-hidden relative">
+<!-- Top Header -->
+<header class="h-16 flex items-center justify-between px-4 md:px-8 border-b border-border-light dark:border-border-dark bg-card-light dark:bg-card-dark shrink-0">
+<div class="flex items-center gap-4 md:hidden">
+<button class="text-text-main-light dark:text-text-main-dark">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<span class="font-bold text-lg">Amenities</span>
+</div>
+<!-- Desktop Breadcrumbs in Header for cleaner look -->
+<div class="hidden md:flex items-center gap-2 text-sm">
+<a class="text-text-sec-light dark:text-text-sec-dark hover:text-primary transition-colors" href="#">Home</a>
+<span class="text-text-sec-light dark:text-text-sec-dark">/</span>
+<a class="text-text-sec-light dark:text-text-sec-dark hover:text-primary transition-colors" href="#">Amenities</a>
+<span class="text-text-sec-light dark:text-text-sec-dark">/</span>
+<span class="font-semibold text-text-main-light dark:text-text-main-dark">Swimming Pool</span>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden sm:flex relative">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 text-text-sec-light dark:text-text-sec-dark material-symbols-outlined text-[20px]">search</span>
+<input class="pl-10 pr-4 py-2 rounded-lg bg-background-light dark:bg-background-dark border-none text-sm focus:ring-2 focus:ring-primary w-64 placeholder-text-sec-light dark:placeholder-text-sec-dark text-text-main-light dark:text-text-main-dark" placeholder="Search..." type="text"/>
+</div>
+<button class="relative p-2 rounded-full hover:bg-background-light dark:hover:bg-background-dark transition-colors text-text-sec-light dark:text-text-sec-dark">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 size-2 bg-red-500 rounded-full border border-white dark:border-card-dark"></span>
+</button>
+</div>
+</header>
+<!-- Scrollable Content -->
+<div class="flex-1 overflow-y-auto p-4 md:p-8 scroll-smooth">
+<div class="max-w-6xl mx-auto w-full">
+<!-- Mobile Breadcrumbs -->
+<div class="md:hidden flex items-center gap-2 text-sm mb-4">
+<a class="flex items-center text-text-sec-light dark:text-text-sec-dark" href="#">
+<span class="material-symbols-outlined text-[18px]">arrow_back</span>
+<span class="ml-1">Back to List</span>
+</a>
+</div>
+<!-- Header Section -->
+<div class="flex flex-col gap-6 mb-8">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<h1 class="text-3xl md:text-4xl font-bold tracking-tight text-text-main-light dark:text-text-main-dark mb-2">Main Clubhouse Pool</h1>
+<div class="flex items-center gap-3 text-sm text-text-sec-light dark:text-text-sec-dark">
+<span class="flex items-center gap-1 text-green-600 dark:text-green-400 font-medium px-2 py-0.5 rounded bg-green-100 dark:bg-green-900/30 border border-green-200 dark:border-green-800">
+<span class="size-2 rounded-full bg-current"></span> Open Now
+                                    </span>
+<span>•</span>
+<span>Closes at 10:00 PM</span>
+<span>•</span>
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">person</span> Max Capacity: 40
+                                    </span>
+</div>
+</div>
+<div class="flex gap-3">
+<button class="p-2 rounded-lg border border-border-light dark:border-border-dark bg-card-light dark:bg-card-dark text-text-sec-light dark:text-text-sec-dark hover:bg-background-light dark:hover:bg-background-dark/50 transition-colors">
+<span class="material-symbols-outlined">share</span>
+</button>
+<button class="p-2 rounded-lg border border-border-light dark:border-border-dark bg-card-light dark:bg-card-dark text-text-sec-light dark:text-text-sec-dark hover:bg-background-light dark:hover:bg-background-dark/50 transition-colors">
+<span class="material-symbols-outlined">favorite</span>
+</button>
+</div>
+</div>
+<!-- Hero Image -->
+<div class="relative w-full h-64 md:h-[400px] rounded-xl overflow-hidden group">
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
+<div class="absolute bottom-4 left-4 z-20 flex gap-2">
+<button class="px-3 py-1.5 bg-white/20 backdrop-blur-md border border-white/30 text-white text-sm font-medium rounded-lg hover:bg-white/30 transition">
+                                    View Photos (12)
+                                </button>
+<button class="px-3 py-1.5 bg-white/20 backdrop-blur-md border border-white/30 text-white text-sm font-medium rounded-lg hover:bg-white/30 transition flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">play_circle</span> Video Tour
+                                </button>
+</div>
+<div class="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-105" data-alt="Luxurious swimming pool with blue water and lounge chairs at sunset" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDNqHp51BtvU58jIaozNVdx32iAiqESxqCUx2tvhgcpZc7Y_LLpVpml3UOcFBoPo2Xcl7m2MzWNHVYBV2SjEszakTYoT4l9htPX3Ug8MJLwbT07G6dzbSwNID6b5MSJ8ikBlYhlsUygZVYInoO-7A8jZprxWxauF-6AaQamhOLFrMrJcuRFta6FMhqc9g4m3PzSbVUAWfDVQI6BQS-dQLcbgWTDUknjEzhjYxNYtNi6JKNJ1brGs0fGWJ6JpFMzFsbPZnx2uphrLw");'>
+</div>
+</div>
+</div>
+<!-- Two Column Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+<!-- Left Column: Details -->
+<div class="lg:col-span-2 flex flex-col gap-10">
+<!-- About Section -->
+<section>
+<h2 class="text-xl font-bold mb-4 text-text-main-light dark:text-text-main-dark">About this amenity</h2>
+<p class="text-text-sec-light dark:text-text-sec-dark leading-relaxed">
+                                    Enjoy our heated saltwater pool, perfect for laps or relaxing. Located behind the main clubhouse, this amenity features dedicated lanes for swimmers and a leisure area for families. The pool deck is equipped with premium lounge chairs, cabanas, and umbrella-shaded tables for your comfort. Towel service is provided at the entrance.
+                                </p>
+</section>
+<!-- Features Grid -->
+<section>
+<h2 class="text-xl font-bold mb-4 text-text-main-light dark:text-text-main-dark">Features</h2>
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+<div class="flex items-start gap-3 p-4 rounded-xl border border-border-light dark:border-border-dark bg-card-light dark:bg-card-dark">
+<div class="p-2 rounded-lg bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400">
+<span class="material-symbols-outlined">thermostat</span>
+</div>
+<div>
+<h3 class="font-bold text-sm text-text-main-light dark:text-text-main-dark">Heated Water</h3>
+<p class="text-xs text-text-sec-light dark:text-text-sec-dark mt-0.5">78°F year-round</p>
+</div>
+</div>
+<div class="flex items-start gap-3 p-4 rounded-xl border border-border-light dark:border-border-dark bg-card-light dark:bg-card-dark">
+<div class="p-2 rounded-lg bg-cyan-50 dark:bg-cyan-900/20 text-cyan-600 dark:text-cyan-400">
+<span class="material-symbols-outlined">water_drop</span>
+</div>
+<div>
+<h3 class="font-bold text-sm text-text-main-light dark:text-text-main-dark">Saltwater</h3>
+<p class="text-xs text-text-sec-light dark:text-text-sec-dark mt-0.5">Gentle on skin</p>
+</div>
+</div>
+<div class="flex items-start gap-3 p-4 rounded-xl border border-border-light dark:border-border-dark bg-card-light dark:bg-card-dark">
+<div class="p-2 rounded-lg bg-orange-50 dark:bg-orange-900/20 text-orange-600 dark:text-orange-400">
+<span class="material-symbols-outlined">wifi</span>
+</div>
+<div>
+<h3 class="font-bold text-sm text-text-main-light dark:text-text-main-dark">Free Wi-Fi</h3>
+<p class="text-xs text-text-sec-light dark:text-text-sec-dark mt-0.5">High speed</p>
+</div>
+</div>
+<div class="flex items-start gap-3 p-4 rounded-xl border border-border-light dark:border-border-dark bg-card-light dark:bg-card-dark">
+<div class="p-2 rounded-lg bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400">
+<span class="material-symbols-outlined">dry_cleaning</span>
+</div>
+<div>
+<h3 class="font-bold text-sm text-text-main-light dark:text-text-main-dark">Towel Service</h3>
+<p class="text-xs text-text-sec-light dark:text-text-sec-dark mt-0.5">Fresh daily</p>
+</div>
+</div>
+<div class="flex items-start gap-3 p-4 rounded-xl border border-border-light dark:border-border-dark bg-card-light dark:bg-card-dark">
+<div class="p-2 rounded-lg bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400">
+<span class="material-symbols-outlined">deck</span>
+</div>
+<div>
+<h3 class="font-bold text-sm text-text-main-light dark:text-text-main-dark">Lounge Area</h3>
+<p class="text-xs text-text-sec-light dark:text-text-sec-dark mt-0.5">25+ Chairs</p>
+</div>
+</div>
+<div class="flex items-start gap-3 p-4 rounded-xl border border-border-light dark:border-border-dark bg-card-light dark:bg-card-dark">
+<div class="p-2 rounded-lg bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400">
+<span class="material-symbols-outlined">shower</span>
+</div>
+<div>
+<h3 class="font-bold text-sm text-text-main-light dark:text-text-main-dark">Showers</h3>
+<p class="text-xs text-text-sec-light dark:text-text-sec-dark mt-0.5">Private stalls</p>
+</div>
+</div>
+</div>
+</section>
+<!-- House Rules -->
+<section>
+<h2 class="text-xl font-bold mb-4 text-text-main-light dark:text-text-main-dark">House Rules</h2>
+<div class="bg-card-light dark:bg-card-dark rounded-xl border border-border-light dark:border-border-dark overflow-hidden">
+<div class="p-4 md:p-6">
+<ul class="flex flex-col gap-4">
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-text-sec-light dark:text-text-sec-dark shrink-0">no_drinks</span>
+<span class="text-text-main-light dark:text-text-main-dark text-sm leading-relaxed">No glass containers allowed in the pool area. Please use plastic cups provided at the bar or bring your own plastic bottles.</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-text-sec-light dark:text-text-sec-dark shrink-0">escalator_warning</span>
+<span class="text-text-main-light dark:text-text-main-dark text-sm leading-relaxed">Children under 12 must be accompanied by an adult resident at all times.</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-text-sec-light dark:text-text-sec-dark shrink-0">soap</span>
+<span class="text-text-main-light dark:text-text-main-dark text-sm leading-relaxed">Please shower before entering the pool to maintain water hygiene.</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-text-sec-light dark:text-text-sec-dark shrink-0">pets</span>
+<span class="text-text-main-light dark:text-text-main-dark text-sm leading-relaxed">No pets allowed within the pool enclosure, with the exception of registered service animals.</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-text-sec-light dark:text-text-sec-dark shrink-0">group</span>
+<span class="text-text-main-light dark:text-text-main-dark text-sm leading-relaxed">Maximum of 2 guests per resident unit during peak hours (Weekends 12PM - 4PM).</span>
+</li>
+</ul>
+</div>
+<div class="bg-background-light dark:bg-background-dark/30 p-4 text-xs text-text-sec-light dark:text-text-sec-dark border-t border-border-light dark:border-border-dark flex gap-2 items-center">
+<span class="material-symbols-outlined text-[16px]">info</span>
+                                        Violation of rules may result in suspension of amenity privileges.
+                                    </div>
+</div>
+</section>
+<!-- Map Location -->
+<section class="pb-8">
+<h2 class="text-xl font-bold mb-4 text-text-main-light dark:text-text-main-dark">Location</h2>
+<div class="rounded-xl overflow-hidden h-48 w-full bg-cover bg-center border border-border-light dark:border-border-dark relative" data-alt="Map showing location of the pool near the clubhouse" data-location="Austin, Texas" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBJinfmERBXnlNVLRVfN4T4Xd3BwWrf-rYLnNDD72WC_RHOp49EbAxOaWNRyDn5EmCC9wUht3LR0RQWTIjco6PAaHtRQxuMdhQEm396aBfRmW8h7NAxhW5WI2QUxvdv-9vSXvERVfcnSASG_6-bDyY7YEkbp5VoVpgq8Y3_ah4VhPT1WOdid4PRWDu76nbH-0eaQnBkFYHe1DTskSX06b7y3ZOI1rgVtd-LMlS6yvXgz1nvZPmZKpYnizfFExGOOt2UksAbUPy1rA");'>
+<div class="absolute inset-0 bg-black/10 flex items-center justify-center">
+<button class="bg-white text-gray-900 px-4 py-2 rounded-lg font-medium shadow-lg hover:bg-gray-50 transition flex items-center gap-2">
+<span class="material-symbols-outlined">map</span> View on Community Map
+                                        </button>
+</div>
+</div>
+</section>
+</div>
+<!-- Right Column: Booking Card (Sticky) -->
+<div class="lg:col-span-1">
+<div class="sticky top-6 flex flex-col gap-6">
+<div class="bg-card-light dark:bg-card-dark rounded-xl shadow-lg shadow-gray-200/50 dark:shadow-none border border-border-light dark:border-border-dark p-6">
+<h2 class="text-lg font-bold mb-4 text-text-main-light dark:text-text-main-dark">Booking Details</h2>
+<div class="flex flex-col gap-4 mb-6">
+<!-- Price -->
+<div class="flex justify-between items-center pb-4 border-b border-border-light dark:border-border-dark">
+<span class="text-text-sec-light dark:text-text-sec-dark text-sm">Price</span>
+<span class="font-bold text-lg text-text-main-light dark:text-text-main-dark">Free <span class="text-xs font-normal text-text-sec-light dark:text-text-sec-dark">/ for residents</span></span>
+</div>
+<!-- Hours Table -->
+<div>
+<h3 class="text-xs font-bold uppercase tracking-wider text-text-sec-light dark:text-text-sec-dark mb-3">Operating Hours</h3>
+<div class="flex flex-col gap-2 text-sm">
+<div class="flex justify-between">
+<span class="text-text-sec-light dark:text-text-sec-dark w-24">Mon - Fri</span>
+<span class="text-text-main-light dark:text-text-main-dark font-medium text-right">6:00 AM - 10:00 PM</span>
+</div>
+<div class="flex justify-between">
+<span class="text-text-sec-light dark:text-text-sec-dark w-24">Sat - Sun</span>
+<span class="text-text-main-light dark:text-text-main-dark font-medium text-right">8:00 AM - 11:00 PM</span>
+</div>
+<div class="flex justify-between text-orange-600 dark:text-orange-400 mt-1">
+<span class="w-24 text-xs">Cleaning</span>
+<span class="font-medium text-right text-xs">Daily 2:00 PM - 2:30 PM</span>
+</div>
+</div>
+</div>
+</div>
+<!-- CTA -->
+<button class="w-full bg-primary hover:bg-blue-600 text-white font-bold py-3.5 px-4 rounded-lg transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 group">
+                                        Book a Slot
+                                        <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+<p class="text-xs text-center mt-3 text-text-sec-light dark:text-text-sec-dark">
+                                        Reservations can be made up to 7 days in advance.
+                                    </p>
+</div>
+<!-- Contact Support Mini Card -->
+<div class="bg-card-light dark:bg-card-dark rounded-xl border border-border-light dark:border-border-dark p-4 flex items-center gap-3">
+<div class="size-10 rounded-full bg-background-light dark:bg-background-dark flex items-center justify-center text-text-sec-light dark:text-text-sec-dark">
+<span class="material-symbols-outlined">support_agent</span>
+</div>
+<div>
+<p class="text-sm font-bold text-text-main-light dark:text-text-main-dark">Questions?</p>
+<a class="text-xs text-primary hover:underline" href="#">Contact Property Manager</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

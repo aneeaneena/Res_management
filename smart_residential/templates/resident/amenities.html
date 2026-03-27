@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Amenities Selection - Resident Portal</title>
+<!-- Material Symbols for Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .active-sidebar-item {
+            background-color: #137fec20; /* Primary with transparency */
+            color: #137fec;
+            border-right: 4px solid #137fec;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen">
+{% include 'resident/_toast.html' %}
+<!-- Main Layout Wrapper -->
+<div class="flex flex-col min-h-screen">
+<!-- Top Navigation Bar -->
+<header class="sticky top-0 z-50 flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-slate-800 bg-white dark:bg-background-dark px-10 py-3">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-4 text-primary">
+<div class="size-6">
+<span class="material-symbols-outlined text-3xl">apartment</span>
+</div>
+<h2 class="text-[#111418] dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">Resident Portal</h2>
+</div>
+<label class="flex flex-col min-w-40 h-10 max-w-64">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full relative">
+<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-400">
+<span class="material-symbols-outlined text-[20px]">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg border-none bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 h-full placeholder:text-slate-500 pl-10 text-base font-normal" placeholder="Search amenities..." value=""/>
+</div>
+</label>
+</div>
+<div class="flex flex-1 justify-end gap-4">
+<div class="flex gap-2">
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+<span class="material-symbols-outlined">help_outline</span>
+</button>
+</div>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border border-slate-200 dark:border-slate-700" data-alt="Profile picture of a resident" style='background-image: url("{% if resident_profile and resident_profile.profile_picture %}{{ resident_profile.profile_picture.url }}{% else %}https://lh3.googleusercontent.com/aida-public/AB6AXuBzScYWf1RO9pk07J-jgJtahJmFJCFEoBhH5thrvxm63w49xROYrLv67GIPkhqkfLaX2u79ogAmwFA3Pys4H9dfcAjTM1-lYP2sS3ywsoZjlBFGwYuEkxI21oUO9EZQzVkEyVoW5uJa1nk0u7PSZiaxGVpNiRPsVw3m7YqrsGXTWPm6Sfmp2N-sKhChRil0BURmKeLOypo1PJuj7gnmN9H-sILheaQVXOe7ci5Z334CWuO7eIkZPvjou1zDYZInpQwoviRVKPlgaps{% endif %}");'></div>
+</div>
+</header>
+<div class="flex flex-1">
+<!-- Side Navigation Bar -->
+<aside class="w-64 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-background-dark hidden lg:flex flex-col sticky top-[65px] h-[calc(100vh-65px)]">
+<div class="flex flex-col h-full justify-between p-4">
+<div class="flex flex-col gap-4">
+<div class="px-3 py-2 flex flex-col">
+<h1 class="text-slate-900 dark:text-white text-sm font-bold uppercase tracking-wider">Management</h1>
+<p class="text-slate-500 dark:text-slate-400 text-xs font-normal">Resident Module</p>
+</div>
+<nav class="flex flex-col gap-1">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all" href="{% url 'resident_dashboard' %}">
+<span class="material-symbols-outlined">home</span>
+<span class="text-sm font-medium">Home</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg active-sidebar-item transition-all" href="{% url 'amenities' %}">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">domain</span>
+<span class="text-sm font-semibold">Amenities</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all" href="{% url 'amenities' %}">
+<span class="material-symbols-outlined">calendar_today</span>
+<span class="text-sm font-medium">My Bookings</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all" href="{% url 'delivery_status' %}">
+<span class="material-symbols-outlined">payments</span>
+<span class="text-sm font-medium">Payments</span>
+</a>
+<div class="my-2 border-t border-slate-100 dark:border-slate-800"></div>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all" href="{% url 'profile' %}">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-sm font-medium">Settings</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-red-600 transition-all" href="{% url 'logout' %}">
+<span class="material-symbols-outlined text-red-400">logout</span>
+<span class="text-sm font-medium">Sign Out</span>
+</a>
+</nav>
+</div>
+<div class="p-3 bg-primary/10 rounded-xl">
+<p class="text-xs font-bold text-primary mb-1">Support Available</p>
+<p class="text-[10px] text-slate-600 dark:text-slate-400 mb-2">Need help with bookings? Contact the front desk.</p>
+<button class="w-full py-1.5 text-xs font-bold bg-primary text-white rounded-lg">Contact Now</button>
+</div>
+</div>
+</aside>
+<!-- Page Content -->
+<main class="flex-1 overflow-y-auto bg-background-light dark:bg-background-dark">
+<div class="max-w-6xl mx-auto px-6 py-8">
+<!-- Page Heading -->
+<div class="flex flex-wrap justify-between items-end gap-4 mb-8">
+<div class="flex flex-col gap-1">
+<h2 class="text-slate-900 dark:text-white text-3xl font-black leading-tight tracking-tight">Amenities</h2>
+<p class="text-slate-500 dark:text-slate-400 text-lg">Explore and book facilities available in your residential community.</p>
+</div>
+<div class="flex gap-3">
+<a href="#booking-list" class="flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-700 dark:text-slate-200 text-sm font-bold shadow-sm hover:bg-slate-50 transition-colors">
+<span class="material-symbols-outlined text-[18px]">history</span>
+<span>Booking History</span>
+</a>
+<a href="#booking-form" class="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg text-sm font-bold shadow-md hover:bg-primary/90 transition-colors">
+<span class="material-symbols-outlined text-[18px]">add</span>
+<span>New Booking</span>
+</a>
+</div>
+</div>
+<!-- Booking Form -->
+<div id="booking-form" class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 p-6 mb-8">
+<h3 class="text-lg font-bold mb-4">Create Booking</h3>
+<form method="POST" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+{% csrf_token %}
+<input type="hidden" name="action" value="book">
+<div class="md:col-span-2">
+<label class="text-sm font-semibold">Amenity</label>
+<select name="amenity_id" class="w-full mt-1 px-3 py-2 border rounded-lg bg-white dark:bg-slate-800">
+<option value="" disabled selected>Select amenity</option>
+{% for amenity in amenities_list %}
+<option value="{{ amenity.id }}">{{ amenity.name }}</option>
+{% endfor %}
+</select>
+</div>
+<div>
+<label class="text-sm font-semibold">Date</label>
+<input type="date" name="booking_date" class="w-full mt-1 px-3 py-2 border rounded-lg bg-white dark:bg-slate-800">
+</div>
+<div>
+<label class="text-sm font-semibold">Time</label>
+<input type="time" name="booking_time" class="w-full mt-1 px-3 py-2 border rounded-lg bg-white dark:bg-slate-800">
+</div>
+<div class="md:col-span-4 flex justify-end">
+<button class="px-4 py-2 bg-primary text-white rounded-lg font-bold">Book Slot</button>
+</div>
+</form>
+</div>
+<!-- Your Bookings -->
+<div id="booking-list" class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 p-6 mb-8">
+<h3 class="text-lg font-bold mb-4">Your Bookings</h3>
+{% if amenity_bookings %}
+<div class="space-y-3">
+{% for booking in amenity_bookings %}
+<div class="flex items-center justify-between p-3 rounded-lg border border-slate-100 dark:border-slate-800">
+<div>
+<p class="font-semibold text-sm">{% if booking.amenity %}{{ booking.amenity.name }}{% else %}{{ booking.amenity_name }}{% endif %}</p>
+<p class="text-xs text-slate-500">{{ booking.start_time|date:"M d, Y H:i" }} - {{ booking.end_time|date:"H:i" }}</p>
+</div>
+<div class="flex items-center gap-3">
+{% if booking.status == 'booked' %}
+<form method="POST">
+{% csrf_token %}
+<input type="hidden" name="action" value="cancel">
+<input type="hidden" name="booking_id" value="{{ booking.id }}">
+<button class="text-xs font-bold px-2 py-1 rounded border border-red-200 text-red-600 hover:bg-red-50">Cancel</button>
+</form>
+{% endif %}
+<span class="text-xs font-bold px-2 py-0.5 rounded
+{% if booking.status == 'booked' %}bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400
+{% elif booking.status == 'completed' %}bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400
+{% else %}bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-300{% endif %}">
+{{ booking.get_status_display }}
+</span>
+</div>
+</div>
+{% endfor %}
+</div>
+{% else %}
+<p class="text-sm text-slate-500">No bookings yet.</p>
+{% endif %}
+</div>
+<!-- Filter Chips -->
+<div class="flex gap-3 mb-8 flex-wrap items-center">
+<span class="text-sm font-bold text-slate-500 mr-2 uppercase tracking-wide">Filter:</span>
+<button class="flex h-9 items-center justify-center gap-x-2 rounded-full bg-primary text-white px-5 shadow-sm">
+<span class="text-sm font-semibold">All Facilities</span>
+</button>
+<button class="flex h-9 items-center justify-center gap-x-2 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-5 text-slate-700 dark:text-slate-200 hover:border-primary transition-all">
+<span class="material-symbols-outlined text-[18px]">fitness_center</span>
+<span class="text-sm font-medium">Fitness</span>
+</button>
+<button class="flex h-9 items-center justify-center gap-x-2 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-5 text-slate-700 dark:text-slate-200 hover:border-primary transition-all">
+<span class="material-symbols-outlined text-[18px]">pool</span>
+<span class="text-sm font-medium">Leisure</span>
+</button>
+<button class="flex h-9 items-center justify-center gap-x-2 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-5 text-slate-700 dark:text-slate-200 hover:border-primary transition-all">
+<span class="material-symbols-outlined text-[18px]">groups</span>
+<span class="text-sm font-medium">Social</span>
+</button>
+<div class="flex-1"></div>
+<div class="flex items-center bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg px-3 py-1.5 gap-2 cursor-pointer">
+<span class="material-symbols-outlined text-[18px] text-slate-400">sort</span>
+<span class="text-sm font-medium text-slate-600 dark:text-slate-300">Sort by: Popular</span>
+</div>
+</div>
+<!-- Amenities Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+{% if amenities_list %}
+{% for amenity in amenities_list %}
+<div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden flex flex-col group hover:shadow-xl transition-all duration-300">
+<div class="relative h-48 w-full overflow-hidden">
+<div class="absolute inset-0 bg-center bg-cover transition-transform duration-500 group-hover:scale-110" style='background-image: url("{% if amenity.image_url %}{{ amenity.image_url }}{% else %}https://lh3.googleusercontent.com/aida-public/AB6AXuBB9PI9OeNToZKUyswWBRoa4fNyLQOTu4O5RPcICeHpXQSvtT6Cxm8F4M1DLfJlrJS8tqzKeJA423Ql3acqJk6CPUBpnIKKQhJmBpuVv1O7dbWPAFzlGpjwyN5fwxbLuHHsC1D-zJ7PALjKFGgDxSuLB7MBaEGxXgmlfViZ01Wr7MDZ5ISyzXBrQsvpsFPNPyiMciLeCdc9RHolH46VWvijFtm-Fkk8zhSrmqKC5k5k0tywVvVMMqNqT5dugbS9HDnLjgoL87qFMqQ{% endif %}");'></div>
+</div>
+<div class="p-5 flex flex-col flex-1">
+<div class="flex justify-between items-start mb-2">
+<h3 class="text-slate-900 dark:text-white text-xl font-bold">{{ amenity.name }}</h3>
+<span class="material-symbols-outlined text-slate-400">info</span>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed mb-4 flex-1">
+{{ amenity.description|default:"" }}
+</p>
+<div class="flex items-center gap-4 mb-5 text-xs text-slate-400">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">schedule</span>
+<span>{{ amenity.open_time }} - {{ amenity.close_time }}</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">timer</span>
+<span>{{ amenity.slot_minutes }} min slots</span>
+</div>
+</div>
+<button class="w-full py-2.5 bg-primary hover:bg-primary/90 text-white font-bold rounded-lg transition-colors shadow-sm active:scale-[0.98]" onclick="document.querySelector('[name=amenity_id]').value='{{ amenity.id }}'; window.scrollTo({top:0, behavior:'smooth'});">
+Book Now
+</button>
+</div>
+</div>
+{% endfor %}
+{% else %}
+<div class="col-span-3 text-sm text-slate-500">No amenities available.</div>
+{% endif %}
+</div>
+<!-- Simple Footer -->
+<footer class="mt-12 border-t border-slate-200 dark:border-slate-800 p-8 text-center">
+<p class="text-slate-400 text-sm">© 2024 Residential Management Systems. All rights reserved.</p>
+</footer>
+</main>
+</div>
+</div>
+</body></html>
+
+

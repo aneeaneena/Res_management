@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Community Notices | Resident Portal</title>
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --card: #ffffff;
+      --text: #121826;
+      --muted: #5f6b7a;
+      --primary: #137fec;
+      --border: #e2e8f0;
+      --danger: #dc2626;
+      --warn: #d97706;
+      --ok: #2563eb;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(180deg, #f7f9fd 0%, #edf3fb 100%);
+      color: var(--text);
+    }
+
+    .app {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 260px 1fr;
+    }
+
+    .sidebar {
+      background: #0f172a;
+      color: #cbd5e1;
+      padding: 24px 16px;
+      border-right: 1px solid #1e293b;
+    }
+
+    .brand {
+      margin-bottom: 24px;
+      padding: 0 8px;
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: 22px;
+      color: #f8fafc;
+      line-height: 1.2;
+    }
+
+    .brand p {
+      margin: 8px 0 0;
+      color: #94a3b8;
+      font-size: 13px;
+    }
+
+    .nav {
+      display: grid;
+      gap: 8px;
+    }
+
+    .nav a {
+      text-decoration: none;
+      color: #cbd5e1;
+      padding: 10px 12px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .nav a:hover {
+      background: #1e293b;
+      color: #f8fafc;
+    }
+
+    .nav a.active {
+      background: #1d4ed8;
+      color: #ffffff;
+    }
+
+    .content {
+      padding: 24px;
+    }
+
+    .topbar {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .topbar-title {
+      margin: 0;
+      font-size: 15px;
+      color: var(--muted);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .profile {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 999px;
+      background-size: cover;
+      background-position: center;
+      border: 2px solid #dbeafe;
+      background-color: #c7d2fe;
+    }
+
+    .page {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 22px;
+    }
+
+    .breadcrumbs {
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 10px;
+    }
+
+    .breadcrumbs a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .header h2 {
+      margin: 0;
+      font-size: 34px;
+      line-height: 1.1;
+    }
+
+    .header p {
+      margin: 8px 0 0;
+      color: var(--muted);
+    }
+
+    .count-badge {
+      background: #e8f3ff;
+      color: #0b5fc1;
+      font-weight: 700;
+      font-size: 13px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    .notice-list {
+      display: grid;
+      gap: 14px;
+    }
+
+    .notice-card {
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--ok);
+      border-radius: 12px;
+      padding: 16px;
+      background: #ffffff;
+    }
+
+    .notice-card.urgent {
+      border-left-color: var(--danger);
+      background: #fff5f5;
+    }
+
+    .notice-card.important {
+      border-left-color: var(--warn);
+      background: #fffaf0;
+    }
+
+    .notice-meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+
+    .notice-title {
+      margin: 0;
+      font-size: 22px;
+    }
+
+    .notice-date {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      background: #f1f5f9;
+      padding: 5px 8px;
+      border-radius: 8px;
+    }
+
+    .notice-body {
+      margin: 0;
+      color: #253041;
+      line-height: 1.6;
+    }
+
+    .empty {
+      border: 1px dashed var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      color: var(--muted);
+      text-align: center;
+      font-weight: 600;
+    }
+
+    @media (max-width: 940px) {
+      .app {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        display: none;
+      }
+
+      .content {
+        padding: 14px;
+      }
+
+      .header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .header h2 {
+        font-size: 30px;
+      }
+    }
+  </style>
+</head>
+<body>
+{% include "resident/_toast.html" %}
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">
+      <h1>Parkview Estate</h1>
+      <p>Resident Module</p>
+    </div>
+    <nav class="nav">
+      <a href="{% url 'resident_dashboard' %}">Dashboard</a>
+      <a class="active" href="{% url 'notices' %}">Notices</a>
+      <a href="{% url 'delivery_status' %}">Deliveries</a>
+      <a href="{% url 'maintenance_request' %}">Payments</a>
+      <a href="{% url 'amenities' %}">Facilities</a>
+      <a href="{% url 'profile' %}">Settings</a>
+      <a href="{% url 'logout' %}">Sign Out</a>
+    </nav>
+  </aside>
+
+  <main class="content">
+    <div class="topbar">
+      <p class="topbar-title">Resident Portal</p>
+      <div class="profile">
+        <div class="avatar" style='background-image: url("{% if resident_profile and resident_profile.profile_picture %}{{ resident_profile.profile_picture.url }}{% endif %}");'></div>
+        <strong>{{ request.user.username }}</strong>
+      </div>
+    </div>
+
+    <section class="page">
+      <div class="breadcrumbs">
+        <a href="{% url 'resident_dashboard' %}">Home</a> &gt; Community Notices
+      </div>
+
+      <div class="header">
+        <div>
+          <h2>Community Notices</h2>
+          <p>Stay updated with the latest community announcements, events, and maintenance alerts.</p>
+        </div>
+        <div class="count-badge">{{ notices|length }} Notices</div>
+      </div>
+
+      {% if notices %}
+      <div class="notice-list">
+        {% for notice in notices %}
+        <article class="notice-card {% if notice.priority == 'urgent' %}urgent{% elif notice.priority == 'important' %}important{% endif %}">
+          <div class="notice-meta">
+            <h3 class="notice-title">{{ notice.title }}</h3>
+            <span class="notice-date">{{ notice.created_at|date:"M d, Y - H:i" }}</span>
+          </div>
+          <p class="notice-body">{{ notice.body }}</p>
+        </article>
+        {% endfor %}
+      </div>
+      {% else %}
+      <div class="empty">No notices available right now.</div>
+      {% endif %}
+    </section>
+  </main>
+</div>
+</body>
+</html>

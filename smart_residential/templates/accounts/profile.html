@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Profile Settings</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "primary": "#137fec",
+          "background-light": "#f6f7f8",
+          "background-dark": "#101922",
+        },
+        fontFamily: {
+          "display": ["Inter", "sans-serif"]
+        },
+        borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+      },
+    },
+  }
+</script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-[#111418] dark:text-white min-h-screen">
+{% include "resident/_toast.html" %}
+<div class="max-w-3xl mx-auto px-6 py-10">
+<div class="flex items-center justify-between mb-6">
+<div>
+<h1 class="text-3xl font-black tracking-tight">Profile Settings</h1>
+<p class="text-sm text-[#617589] dark:text-gray-400">Update your account details and profile photo.</p>
+</div>
+<a class="text-sm font-medium text-primary hover:underline" href="javascript:history.back()">Back</a>
+</div>
+<div class="bg-white dark:bg-[#1a2634] rounded-xl border border-[#e5e7eb] dark:border-[#2a3441] shadow-sm p-6">
+<form method="post" class="space-y-5">
+{% csrf_token %}
+<input type="hidden" name="action" value="update_profile"/>
+<div class="flex items-center gap-4">
+<div class="size-16 rounded-full bg-cover bg-center border border-[#e5e7eb] dark:border-[#2a3441]" style="background-image: url('{% if user_profile and user_profile.profile_picture %}{{ user_profile.profile_picture.url }}{% else %}https://lh3.googleusercontent.com/aida-public/AB6AXuA3-TAyqAn61g1zARtw0JTe-v7DadsUzHT_5-4POl19VdfC1GcJcnC_hLhHM0itVBaoyjfuoMuP26GEHiBxGEUO8EDO451U2NsaG0fZajb64eHaxJAInMPXN0zIGQRBp5oHmCzRmAJvjIWLJN2SyV5eag_HHV3vAqyQyc01bo_yLqPsxTjK-sKoN7AcEObM2CmwxMi-tweadhR78RGyqjlThtCaX8vuRINy4AyJ7WQgQ4hs5gIBpNWg-hnJXBjNpmLJOG1P29RT9Ic{% endif %}');"></div>
+<div class="flex-1">
+<label class="block text-sm font-medium mb-1">Profile Picture</label>
+<p class="text-xs text-[#617589] dark:text-gray-400">Use the upload form below to change picture.</p>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div>
+<label class="block text-sm font-medium mb-1">Username</label>
+<input class="w-full rounded-lg border border-[#e5e7eb] dark:border-[#2a3441] bg-white dark:bg-[#0f1724] px-3 py-2 text-sm" name="username" value="{{ request.user.username }}" required/>
+</div>
+<div>
+<label class="block text-sm font-medium mb-1">Email</label>
+<input class="w-full rounded-lg border border-[#e5e7eb] dark:border-[#2a3441] bg-white dark:bg-[#0f1724] px-3 py-2 text-sm" name="email" type="email" value="{{ request.user.email }}"/>
+</div>
+</div>
+<div>
+<label class="block text-sm font-medium mb-1">Phone</label>
+<input class="w-full rounded-lg border border-[#e5e7eb] dark:border-[#2a3441] bg-white dark:bg-[#0f1724] px-3 py-2 text-sm" name="phone" value="{{ user_profile.phone }}" placeholder="Contact number"/>
+</div>
+<div class="flex justify-end">
+<button class="h-10 px-5 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-blue-600 transition-colors" type="submit">Save Changes</button>
+</div>
+</form>
+<form method="post" enctype="multipart/form-data" class="mt-6 border-t border-[#e5e7eb] dark:border-[#2a3441] pt-5 flex flex-col sm:flex-row sm:items-end gap-3">
+{% csrf_token %}
+<input type="hidden" name="action" value="upload_profile_picture"/>
+<div class="flex-1">
+<label class="block text-sm font-medium mb-1">Upload New Profile Picture</label>
+<input class="w-full rounded-lg border border-[#e5e7eb] dark:border-[#2a3441] bg-white dark:bg-[#0f1724] px-3 py-2 text-sm" name="profile_picture" type="file" accept="image/*" required/>
+</div>
+<button class="h-10 px-5 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-blue-600 transition-colors" type="submit">Upload Photo</button>
+</form>
+</div>
+</div>
+</body>
+</html>

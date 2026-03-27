@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Residential Management System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            color-scheme: light;
+        }
+
+        body {
+            font-family: 'Manrope', sans-serif;
+            scroll-behavior: smooth;
+            background:
+                radial-gradient(circle at top left, rgba(96, 165, 250, 0.18), transparent 30%),
+                radial-gradient(circle at top right, rgba(16, 185, 129, 0.16), transparent 24%),
+                linear-gradient(180deg, #eff6ff 0%, #f8fafc 26%, #ffffff 100%);
+        }
+
+        .hero-photo {
+            background-image:
+                linear-gradient(180deg, rgba(15, 23, 42, 0.08), rgba(15, 23, 42, 0.74)),
+                url("https://images.unsplash.com/photo-1460317442991-0ec209397118?auto=format&fit=crop&w=1200&q=80");
+            background-size: cover;
+            background-position: center;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.78);
+            backdrop-filter: blur(16px);
+        }
+
+        .card-hover {
+            transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 24px 50px rgba(15, 23, 42, 0.12);
+            border-color: rgba(59, 130, 246, 0.2);
+        }
+    </style>
+</head>
+
+<body class="text-slate-800 flex min-h-screen flex-col">
+
+    <nav class="sticky top-0 z-50 border-b border-white/70 bg-white/80 backdrop-blur-xl">
+        <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
+            <div class="flex cursor-pointer items-center gap-3" onclick="window.location.reload()">
+                <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-blue-600 text-white shadow-lg shadow-blue-200">
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                    </svg>
+                </div>
+                <div>
+                    <p class="text-2xl font-extrabold tracking-tight text-slate-900">SmartRes</p>
+                    <p class="text-xs font-medium uppercase tracking-[0.28em] text-slate-400">Community Living</p>
+                </div>
+            </div>
+
+            <div class="hidden items-center gap-8 md:flex">
+                <a href="#" class="font-semibold text-slate-600 transition hover:text-blue-600">Home</a>
+                <a href="/accounts/login/" class="font-semibold text-slate-600 transition hover:text-blue-600">Login</a>
+                <a href="#roles"
+                    class="rounded-full bg-blue-600 px-6 py-3 font-semibold text-white shadow-lg shadow-blue-200 transition hover:-translate-y-0.5 hover:bg-blue-700">Register</a>
+            </div>
+
+            <button id="mobile-menu-btn"
+                class="rounded-xl border border-slate-200 p-2 text-slate-500 transition hover:bg-slate-50 md:hidden">
+                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
+        </div>
+
+        <div id="mobile-menu" class="hidden border-t border-slate-100 bg-white md:hidden">
+            <a href="#" class="block px-5 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50">Home</a>
+            <a href="/accounts/login/" class="block px-5 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50">Login</a>
+            <a href="#roles" class="block px-5 py-3 text-sm font-semibold text-blue-600 hover:bg-blue-50">Register</a>
+        </div>
+    </nav>
+
+    <header class="px-4 pb-12 pt-8 sm:px-6 lg:px-8 lg:pb-20 lg:pt-12">
+        <div class="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
+            <div class="order-2 lg:order-1">
+                <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white/90 px-4 py-2 text-sm font-semibold text-blue-700 shadow-sm">
+                    <span class="h-2.5 w-2.5 rounded-full bg-emerald-500"></span>
+                    Resident-friendly community management platform
+                </div>
+
+                <h1 class="max-w-3xl text-4xl font-extrabold leading-tight tracking-tight text-slate-900 sm:text-5xl lg:text-6xl">
+                    Make your residential area feel
+                    <span class="text-blue-600">smarter, safer, and easier</span>
+                    to manage.
+                </h1>
+
+                <p class="mt-6 max-w-2xl text-lg leading-8 text-slate-600 sm:text-xl">
+                    One place for residents, delivery teams, and maintenance staff to coordinate daily life with less
+                    confusion and a more welcoming community experience.
+                </p>
+
+                <div class="mt-8 flex flex-col gap-4 sm:flex-row">
+                    <a href="#roles"
+                        class="inline-flex items-center justify-center rounded-2xl bg-slate-900 px-7 py-4 text-base font-bold text-white shadow-xl shadow-slate-200 transition hover:-translate-y-0.5 hover:bg-slate-800">
+                        Choose Your Role
+                    </a>
+                    <a href="/accounts/login/"
+                        class="inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-white px-7 py-4 text-base font-bold text-slate-700 transition hover:border-blue-200 hover:text-blue-600">
+                        Login to Dashboard
+                    </a>
+                </div>
+
+                <div class="mt-10 grid gap-4 sm:grid-cols-3">
+                    <div class="glass-card rounded-3xl border border-white/70 p-5 shadow-lg shadow-blue-100/50">
+                        <p class="text-3xl font-extrabold text-slate-900">24/7</p>
+                        <p class="mt-2 text-sm font-medium text-slate-500">Resident access to bookings and updates</p>
+                    </div>
+                    <div class="glass-card rounded-3xl border border-white/70 p-5 shadow-lg shadow-blue-100/50">
+                        <p class="text-3xl font-extrabold text-slate-900">3 Roles</p>
+                        <p class="mt-2 text-sm font-medium text-slate-500">One connected experience for every team</p>
+                    </div>
+                    <div class="glass-card rounded-3xl border border-white/70 p-5 shadow-lg shadow-blue-100/50">
+                        <p class="text-3xl font-extrabold text-slate-900">Fast</p>
+                        <p class="mt-2 text-sm font-medium text-slate-500">Approvals, maintenance, and delivery flow</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="order-1 lg:order-2">
+                <div class="hero-photo relative overflow-hidden rounded-[2rem] border border-white/60 p-5 shadow-2xl shadow-blue-100 min-h-[420px] sm:min-h-[520px]">
+                    <div class="absolute inset-0 bg-gradient-to-br from-blue-600/20 via-transparent to-emerald-500/10"></div>
+
+                    <div class="relative flex h-full flex-col justify-between">
+                        <div class="flex items-start justify-between gap-4">
+                            <div class="glass-card max-w-xs rounded-3xl border border-white/40 p-4 shadow-lg">
+                                <p class="text-xs font-bold uppercase tracking-[0.3em] text-slate-500">Resident Area</p>
+                                <p class="mt-2 text-xl font-extrabold text-slate-900">A brighter first impression for your home community</p>
+                            </div>
+                            <div class="rounded-full bg-white/90 px-4 py-2 text-sm font-semibold text-slate-700 shadow-lg">
+                                Secure and organized
+                            </div>
+                        </div>
+
+                        <div class="space-y-4">
+                            <div class="glass-card max-w-sm rounded-3xl border border-white/40 p-5 shadow-lg">
+                                <p class="text-sm font-semibold text-slate-500">Live Features</p>
+                                <div class="mt-4 flex flex-wrap gap-3">
+                                    <span class="rounded-full bg-blue-100 px-3 py-2 text-sm font-bold text-blue-700">Amenity Booking</span>
+                                    <span class="rounded-full bg-orange-100 px-3 py-2 text-sm font-bold text-orange-700">Delivery Tracking</span>
+                                    <span class="rounded-full bg-emerald-100 px-3 py-2 text-sm font-bold text-emerald-700">Maintenance Support</span>
+                                </div>
+                            </div>
+                            <div class="rounded-3xl border border-white/20 bg-slate-950/55 p-6 text-white backdrop-blur-sm">
+                                <p class="text-sm font-semibold text-blue-100">SmartRes helps residents feel connected</p>
+                                <p class="mt-2 text-2xl font-bold leading-snug">Beautiful entry point, clear role access, and smoother daily operations.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main id="roles" class="flex-grow px-4 pb-16 sm:px-6 lg:px-8">
+        <div class="mx-auto max-w-7xl">
+            <div class="mb-8 text-center">
+                <p class="text-sm font-bold uppercase tracking-[0.32em] text-blue-600">Select Portal</p>
+                <h2 class="mt-3 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">Choose how you want to enter SmartRes</h2>
+                <p class="mx-auto mt-4 max-w-3xl text-base leading-7 text-slate-600 sm:text-lg">
+                    Each role gets a focused experience tailored for residential living, daily services, and community support.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-3">
+                <div class="card-hover rounded-[2rem] border border-slate-200/70 bg-white/90 p-8 text-center shadow-lg shadow-slate-100">
+                    <div class="mx-auto flex h-20 w-20 items-center justify-center rounded-[1.75rem] bg-blue-100 text-blue-600 shadow-inner shadow-blue-200/60">
+                        <svg class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                        </svg>
+                    </div>
+                    <h3 class="mt-6 text-2xl font-extrabold text-slate-900">Resident</h3>
+                    <p class="mt-3 text-base leading-7 text-slate-500">
+                        Manage your home services, book amenities, stay informed, and keep track of deliveries with ease.
+                    </p>
+                    <a href="/accounts/register/?role=resident"
+                        class="mt-8 inline-flex w-full items-center justify-center rounded-2xl bg-blue-600 px-6 py-3.5 text-base font-bold text-white shadow-lg shadow-blue-200 transition hover:bg-blue-700">
+                        Register as Resident
+                    </a>
+                </div>
+
+                <div class="card-hover rounded-[2rem] border border-slate-200/70 bg-white/90 p-8 text-center shadow-lg shadow-slate-100">
+                    <div class="mx-auto flex h-20 w-20 items-center justify-center rounded-[1.75rem] bg-orange-100 text-orange-600 shadow-inner shadow-orange-200/60">
+                        <svg class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0" />
+                        </svg>
+                    </div>
+                    <h3 class="mt-6 text-2xl font-extrabold text-slate-900">Delivery Staff</h3>
+                    <p class="mt-3 text-base leading-7 text-slate-500">
+                        Handle resident deliveries smoothly with clear approvals, status updates, and better visibility.
+                    </p>
+                    <a href="/accounts/register/?role=delivery"
+                        class="mt-8 inline-flex w-full items-center justify-center rounded-2xl border border-orange-200 bg-orange-50 px-6 py-3.5 text-base font-bold text-orange-700 transition hover:bg-orange-100">
+                        Register as Delivery Staff
+                    </a>
+                </div>
+
+                <div class="card-hover rounded-[2rem] border border-slate-200/70 bg-white/90 p-8 text-center shadow-lg shadow-slate-100 md:col-span-2 xl:col-span-1">
+                    <div class="mx-auto flex h-20 w-20 items-center justify-center rounded-[1.75rem] bg-emerald-100 text-emerald-600 shadow-inner shadow-emerald-200/60">
+                        <svg class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                    </div>
+                    <h3 class="mt-6 text-2xl font-extrabold text-slate-900">Maintenance</h3>
+                    <p class="mt-3 text-base leading-7 text-slate-500">
+                        Receive tasks, update repair progress, and support residents with a more organized workflow.
+                    </p>
+                    <a href="/accounts/register/?role=maintenance"
+                        class="mt-8 inline-flex w-full items-center justify-center rounded-2xl border border-emerald-200 bg-emerald-50 px-6 py-3.5 text-base font-bold text-emerald-700 transition hover:bg-emerald-100">
+                        Register as Maintenance
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="border-t border-slate-200/80 bg-white/80 py-8 backdrop-blur-sm">
+        <div class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-4 text-center sm:px-6 md:flex-row md:text-left lg:px-8">
+            <div>
+                <p class="text-lg font-extrabold text-slate-900">SmartRes</p>
+                <p class="text-sm text-slate-500">&copy; 2026 Smart Residential. All rights reserved.</p>
+            </div>
+            <div class="flex gap-6 text-sm font-medium text-slate-500">
+                <a href="#" class="transition hover:text-blue-600">Privacy Policy</a>
+                <a href="#" class="transition hover:text-blue-600">Support</a>
+                <a href="#" class="transition hover:text-blue-600">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const btn = document.getElementById("mobile-menu-btn");
+        const menu = document.getElementById("mobile-menu");
+
+        btn.addEventListener("click", () => {
+            menu.classList.toggle("hidden");
+        });
+    </script>
+</body>
+
+</html>

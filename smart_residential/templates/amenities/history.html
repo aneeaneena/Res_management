@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Booking History - Resident Portal</title>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts: Manrope -->
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#137fec",
+              "background-light": "#f6f7f8",
+              "background-dark": "#101922",
+            },
+            fontFamily: {
+              "display": ["Manrope", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            font-family: 'Manrope', sans-serif;
+        }
+        /* Custom scrollbar for better aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+        .material-symbols-outlined {
+            font-variation-settings:
+            'FILL' 0,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 24
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-[#111418] dark:text-white overflow-hidden">
+<div class="flex h-screen w-full">
+<!-- SIDEBAR -->
+<aside class="flex w-72 flex-col border-r border-[#e5e7eb] bg-white dark:bg-[#111418] dark:border-[#293038] hidden md:flex shrink-0">
+<div class="flex h-full flex-col justify-between p-4">
+<div class="flex flex-col gap-4">
+<!-- User Profile Snippet in Sidebar -->
+<div class="flex gap-3 mb-4">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-12" data-alt="Profile picture of a resident" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDR_g2xSOEO7dJavNo74X1aT3MgYQ7YrbSODhgUMw_ZLseKC3fAbdku42IN7q2CykTJ1b0WGvPbnCfkRrgnB1gxHMrZQUtRBEwAj2sLH8uQ_Tou0tRaXX0f7sVHdMF1Ff49mcNnTmM43sZZMgAYh8PyV5F3SUaQcOH3Z_-ug0SLGf-ZxWMFfUPabRqW9RtJkDeVjeK1H7EPwEZCizXZb_Cf2LsKU2byi0rbKO5QZVsFKrEGCyIe4wlVg1yAUS70cBYfpbxJ0ahqSw");'></div>
+<div class="flex flex-col justify-center">
+<h1 class="text-[#111418] dark:text-white text-base font-bold leading-normal">Resident Portal</h1>
+<p class="text-[#617589] dark:text-[#9ca3af] text-sm font-normal leading-normal">Unit 402</p>
+</div>
+</div>
+<!-- Navigation Links -->
+<div class="flex flex-col gap-2">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[#f0f2f4] dark:hover:bg-[#1f2937] transition-colors group" href="#">
+<span class="material-symbols-outlined text-[#617589] group-hover:text-[#111418] dark:text-[#9ca3af] dark:group-hover:text-white">dashboard</span>
+<p class="text-[#617589] group-hover:text-[#111418] dark:text-[#9ca3af] dark:group-hover:text-white text-sm font-medium leading-normal">Dashboard</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary/10 text-primary" href="#">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">chair</span>
+<p class="text-primary text-sm font-bold leading-normal">Amenities</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[#f0f2f4] dark:hover:bg-[#1f2937] transition-colors group" href="#">
+<span class="material-symbols-outlined text-[#617589] group-hover:text-[#111418] dark:text-[#9ca3af] dark:group-hover:text-white">credit_card</span>
+<p class="text-[#617589] group-hover:text-[#111418] dark:text-[#9ca3af] dark:group-hover:text-white text-sm font-medium leading-normal">Payments</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[#f0f2f4] dark:hover:bg-[#1f2937] transition-colors group" href="#">
+<span class="material-symbols-outlined text-[#617589] group-hover:text-[#111418] dark:text-[#9ca3af] dark:group-hover:text-white">build</span>
+<p class="text-[#617589] group-hover:text-[#111418] dark:text-[#9ca3af] dark:group-hover:text-white text-sm font-medium leading-normal">Maintenance</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[#f0f2f4] dark:hover:bg-[#1f2937] transition-colors group" href="#">
+<span class="material-symbols-outlined text-[#617589] group-hover:text-[#111418] dark:text-[#9ca3af] dark:group-hover:text-white">groups</span>
+<p class="text-[#617589] group-hover:text-[#111418] dark:text-[#9ca3af] dark:group-hover:text-white text-sm font-medium leading-normal">Community</p>
+</a>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[#f0f2f4] dark:hover:bg-[#1f2937] transition-colors group" href="#">
+<span class="material-symbols-outlined text-[#617589] group-hover:text-[#111418] dark:text-[#9ca3af] dark:group-hover:text-white">help</span>
+<p class="text-[#617589] group-hover:text-[#111418] dark:text-[#9ca3af] dark:group-hover:text-white text-sm font-medium leading-normal">Support</p>
+</a>
+</div>
+</div>
+</aside>
+<!-- MAIN CONTENT -->
+<main class="flex flex-1 flex-col h-full overflow-hidden bg-background-light dark:bg-background-dark relative">
+<!-- TOP NAV -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-[#e5e7eb] dark:border-[#293038] bg-white dark:bg-[#111418] px-6 py-3 shrink-0">
+<div class="flex items-center gap-4 lg:gap-8 w-full md:w-auto">
+<div class="flex items-center gap-2 text-[#111418] dark:text-white md:hidden">
+<button class="text-[#617589] dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded p-1">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+<!-- Search Bar (Top Nav Variant) -->
+<label class="hidden md:flex flex-col min-w-40 !h-10 max-w-64">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full border border-[#e5e7eb] dark:border-[#293038] overflow-hidden">
+<div class="text-[#617589] flex border-none bg-white dark:bg-[#1e2732] items-center justify-center pl-3">
+<span class="material-symbols-outlined text-[20px]">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden text-[#111418] dark:text-white focus:outline-0 focus:ring-0 border-none bg-white dark:bg-[#1e2732] focus:border-none h-full placeholder:text-[#617589] px-2 text-sm font-normal leading-normal" placeholder="Search..." value=""/>
+</div>
+</label>
+</div>
+<div class="flex items-center gap-4 lg:gap-8 justify-end">
+<div class="hidden md:flex items-center gap-6">
+<a class="text-[#111418] dark:text-white text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">Profile</a>
+<a class="text-[#111418] dark:text-white text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">Settings</a>
+<a class="text-[#111418] dark:text-white text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">Logout</a>
+</div>
+<div class="flex gap-2">
+<button class="flex items-center justify-center overflow-hidden rounded-full size-10 hover:bg-[#f0f2f4] dark:hover:bg-[#1f2937] text-[#111418] dark:text-white transition-colors relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 size-2 bg-red-500 rounded-full border border-white dark:border-[#111418]"></span>
+</button>
+<button class="flex items-center justify-center overflow-hidden rounded-full size-10 hover:bg-[#f0f2f4] dark:hover:bg-[#1f2937] text-[#111418] dark:text-white transition-colors">
+<span class="material-symbols-outlined">chat_bubble</span>
+</button>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 ml-2 border border-[#e5e7eb] dark:border-[#293038]" data-alt="User avatar thumbnail" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuABIYaVrtWnTAjJGXpz4LRAxBf1eqJt1IFhE8N5ssUfnQ91QeG5da3oT71nXm9uKKtQMJtyQA8XeKl2ru8s3dqQ-_HbVJ7zvgY-b7V3xhod0mhngDF3XgC2nmJR20fS7nGnxLuSTe94LQP7pLetHEkqJe75OaBld_8qSh-pPbipcSZz5sGx2FOOY0mmh-Jr3wtPFROKig5g1bPlsTKHkdWf3sh24E3uaZMqGutgpKck1jhpp3KYjeGlqG9D1YyeVuOCHw_bkIKoJg");'></div>
+</div>
+</div>
+</header>
+<!-- PAGE CONTENT SCROLLABLE AREA -->
+<div class="flex-1 overflow-y-auto p-4 md:p-8 lg:px-12">
+<div class="max-w-7xl mx-auto flex flex-col gap-6">
+<!-- Breadcrumbs (Simplified) -->
+<nav class="flex text-sm text-[#617589] dark:text-[#9ca3af]">
+<a class="hover:text-primary" href="#">Home</a>
+<span class="mx-2">/</span>
+<a class="hover:text-primary" href="#">Amenities</a>
+<span class="mx-2">/</span>
+<span class="text-[#111418] dark:text-white font-medium">History</span>
+</nav>
+<!-- Page Heading -->
+<div class="flex flex-col md:flex-row md:items-start justify-between gap-4">
+<div class="flex flex-col gap-1">
+<h2 class="text-[#111418] dark:text-white text-3xl font-extrabold leading-tight tracking-[-0.033em]">My Bookings</h2>
+<p class="text-[#617589] dark:text-[#9ca3af] text-base font-normal leading-normal">View and manage your past and upcoming amenity reservations.</p>
+</div>
+<button class="flex shrink-0 items-center justify-center gap-2 rounded-lg h-10 px-4 bg-white dark:bg-[#1e2732] border border-[#d1d5db] dark:border-[#374151] text-[#111418] dark:text-white text-sm font-bold leading-normal hover:bg-[#f3f4f6] dark:hover:bg-[#374151] transition-colors shadow-sm">
+<span class="material-symbols-outlined text-[18px]">arrow_back</span>
+<span class="truncate">Back to Amenities</span>
+</button>
+</div>
+<!-- Filters & Search Toolbar -->
+<div class="flex flex-col md:flex-row gap-4 bg-white dark:bg-[#111418] p-4 rounded-xl shadow-sm border border-[#e5e7eb] dark:border-[#293038]">
+<!-- Search -->
+<div class="flex-1 relative">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-[#617589] dark:text-[#9ca3af]">search</span>
+</div>
+<input class="block w-full pl-10 pr-3 py-2.5 border border-[#e5e7eb] dark:border-[#374151] rounded-lg leading-5 bg-[#f8fafc] dark:bg-[#1e2732] text-[#111418] dark:text-white placeholder-[#617589] dark:placeholder-[#6b7280] focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary sm:text-sm" placeholder="Search by amenity name..." type="text"/>
+</div>
+<!-- Filter Chips -->
+<div class="flex gap-2 overflow-x-auto pb-1 md:pb-0 scrollbar-hide">
+<button class="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-primary text-white pl-4 pr-3 text-sm font-medium shadow-sm transition-colors">
+                                All Status
+                                <span class="material-symbols-outlined text-[18px]">expand_more</span>
+</button>
+<button class="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-[#f0f2f4] dark:bg-[#1e2732] text-[#111418] dark:text-white pl-4 pr-3 text-sm font-medium hover:bg-[#e2e4e6] dark:hover:bg-[#374151] transition-colors">
+                                Upcoming
+                            </button>
+<button class="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-[#f0f2f4] dark:bg-[#1e2732] text-[#111418] dark:text-white pl-4 pr-3 text-sm font-medium hover:bg-[#e2e4e6] dark:hover:bg-[#374151] transition-colors">
+                                Completed
+                            </button>
+<button class="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-[#f0f2f4] dark:bg-[#1e2732] text-[#111418] dark:text-white pl-4 pr-3 text-sm font-medium hover:bg-[#e2e4e6] dark:hover:bg-[#374151] transition-colors">
+                                Cancelled
+                            </button>
+</div>
+</div>
+<!-- Data Table Card -->
+<div class="bg-white dark:bg-[#111418] rounded-xl shadow-sm border border-[#e5e7eb] dark:border-[#293038] overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-[#f9fafb] dark:bg-[#1e2732] border-b border-[#e5e7eb] dark:border-[#374151]">
+<th class="px-6 py-4 text-xs font-bold text-[#617589] dark:text-[#9ca3af] uppercase tracking-wider">Amenity</th>
+<th class="px-6 py-4 text-xs font-bold text-[#617589] dark:text-[#9ca3af] uppercase tracking-wider">Date</th>
+<th class="px-6 py-4 text-xs font-bold text-[#617589] dark:text-[#9ca3af] uppercase tracking-wider">Time Slot</th>
+<th class="px-6 py-4 text-xs font-bold text-[#617589] dark:text-[#9ca3af] uppercase tracking-wider">Duration</th>
+<th class="px-6 py-4 text-xs font-bold text-[#617589] dark:text-[#9ca3af] uppercase tracking-wider">Status</th>
+<th class="px-6 py-4 text-xs font-bold text-[#617589] dark:text-[#9ca3af] uppercase tracking-wider text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-[#e5e7eb] dark:divide-[#293038]">
+<!-- Row 1 -->
+<tr class="hover:bg-[#f9fafb] dark:hover:bg-[#1e2732] transition-colors group">
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-3">
+<div class="h-10 w-10 rounded-lg bg-cover bg-center shrink-0 border border-gray-200 dark:border-gray-700" data-alt="Swimming pool view" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuADWNvY-x4IARuLrQIYN_e_ix-AUclz3X5e_Qa8pzPcpZWj70JZ6jBjMTZIMA95pmUQZR4m-0ZUjVIVbIZTSC-Xhm_so_Yg97hqJdP4p4uFpvZP9uqw4zs267OPNk8-W6AVml4qmJHjMmh8KIosRxNEdwOIMzsrDouARI8tKvy55mibrAVTbKCK2vdsurVXpqQfbu-rIXQ_0SHIHb6ytap6OnYCjytix0hLjTkCznnLU-jzjSlzOwz7VtiathByT-Uu3c9U6tziGA");'></div>
+<div class="flex flex-col">
+<span class="text-sm font-bold text-[#111418] dark:text-white group-hover:text-primary transition-colors">Swimming Pool</span>
+<span class="text-xs text-[#617589] dark:text-[#9ca3af]">Main Clubhouse</span>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-[#111418] dark:text-[#d1d5db]">Oct 24, 2023</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-[#111418] dark:text-[#d1d5db] font-medium font-mono">10:00 AM - 11:00 AM</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-[#617589] dark:text-[#9ca3af]">1 hr</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">
+<span class="size-1.5 rounded-full bg-green-600 dark:bg-green-400"></span>
+                                                Confirmed
+                                            </span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+<button class="text-[#617589] dark:text-[#9ca3af] hover:text-red-600 dark:hover:text-red-400 transition-colors mr-3 font-semibold text-xs">Cancel</button>
+<button class="text-primary hover:text-blue-700 dark:hover:text-blue-400 transition-colors">
+<span class="material-symbols-outlined text-[20px]">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-[#f9fafb] dark:hover:bg-[#1e2732] transition-colors group">
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-3">
+<div class="h-10 w-10 rounded-lg bg-cover bg-center shrink-0 border border-gray-200 dark:border-gray-700" data-alt="BBQ area with grill" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCqjvwfVzLl1MoG4ORskUbDXv0FNdP0_BHVZ2qB2fT9oOF6kD3Ww4F2TAuPUcBHez3hdCvoFi2MWiaCT_oSAYAMbgsC220dRQi0JxqQVk3Zp-_XuHNGpiff8-8pM-X0VzR6_pQMHdQ8Esf6qXrgWrXgm4_BLQSFD6gQPCGYgCz5Mcj8IA8cE4mV0r2USbPq2zJKYZI6yalGLNWm1LZmob0oGFQTPaV2IOLtLpX8flMxsYi2WvzX2q0kyHM9UEJLXM6kClZBZSjrqQ");'></div>
+<div class="flex flex-col">
+<span class="text-sm font-bold text-[#111418] dark:text-white group-hover:text-primary transition-colors">BBQ Pit Area 1</span>
+<span class="text-xs text-[#617589] dark:text-[#9ca3af]">Rooftop Garden</span>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-[#111418] dark:text-[#d1d5db]">Sept 12, 2023</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-[#111418] dark:text-[#d1d5db] font-medium font-mono">06:00 PM - 09:00 PM</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-[#617589] dark:text-[#9ca3af]">3 hrs</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300">
+<span class="size-1.5 rounded-full bg-gray-500"></span>
+                                                Completed
+                                            </span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+<button class="text-primary hover:text-blue-700 dark:hover:text-blue-400 font-semibold text-xs mr-3">View Receipt</button>
+<button class="text-primary hover:text-blue-700 dark:hover:text-blue-400 transition-colors">
+<span class="material-symbols-outlined text-[20px]">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-[#f9fafb] dark:hover:bg-[#1e2732] transition-colors group">
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-3">
+<div class="h-10 w-10 rounded-lg bg-cover bg-center shrink-0 border border-gray-200 dark:border-gray-700" data-alt="Tennis court surface" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD7jk_30NETj17-lUdBjzjDuZp65fpiD3_yh-M_nTp5eNXU2IJ5vRuiXKo3iu-HoEzLdQmkpqG_GuhOwvLPsSVZrRz6q1bPDbqZJNhQUUrYSGdDShrRyV8w-MyYA2O9WcGXg3RaM0ZP6IBLZSiPnUndTw1ZeuqKMXvpZRZOOREITizyf1ltmN1RlQd9HNTMRJNhzwGS4pq8GBkBCf03gtQ93RY8w_-WoANlEFYUlmPhO956etDYcSQbMx-GQpUusOnQgmI1LgJ46Q");'></div>
+<div class="flex flex-col">
+<span class="text-sm font-bold text-[#111418] dark:text-white group-hover:text-primary transition-colors">Tennis Court</span>
+<span class="text-xs text-[#617589] dark:text-[#9ca3af]">Block B</span>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-[#111418] dark:text-[#d1d5db]">Aug 05, 2023</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-[#111418] dark:text-[#d1d5db] font-medium font-mono">08:00 AM - 09:00 AM</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-[#617589] dark:text-[#9ca3af]">1 hr</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400">
+<span class="size-1.5 rounded-full bg-red-600 dark:bg-red-400"></span>
+                                                Cancelled
+                                            </span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+<button class="text-primary hover:text-blue-700 dark:hover:text-blue-400 transition-colors">
+<span class="material-symbols-outlined text-[20px]">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-[#f9fafb] dark:hover:bg-[#1e2732] transition-colors group">
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-3">
+<div class="h-10 w-10 rounded-lg bg-cover bg-center shrink-0 border border-gray-200 dark:border-gray-700" data-alt="Yoga studio interior" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDdJ34pcwfUmxvyWCf57m4ugAMaeEShYPx0JRxGWcT28tX61fMSlVHqmWgMaXCddHBivrgXqM8XijJlp-x6hn8kc5H12VgWWyXVQgeBO7BUS7_YtTUwIfu5bw0qW-h2hJSGl4n89wBYNoa52VRenZgSS2jsUalxxLhkHkcQu6_UVVi1uW8XumWMYkws2hspVz1EJxLkwWM2UWTTZdS_L_X8wE7k16PyYVhxfo9cpi4cfuFlck40a7BTKTbtUR_HLifXVxW4jnSRvw");'></div>
+<div class="flex flex-col">
+<span class="text-sm font-bold text-[#111418] dark:text-white group-hover:text-primary transition-colors">Yoga Studio</span>
+<span class="text-xs text-[#617589] dark:text-[#9ca3af]">Gym Complex</span>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-[#111418] dark:text-[#d1d5db]">July 19, 2023</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-[#111418] dark:text-[#d1d5db] font-medium font-mono">07:00 PM - 08:30 PM</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-[#617589] dark:text-[#9ca3af]">1.5 hrs</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300">
+<span class="size-1.5 rounded-full bg-gray-500"></span>
+                                                Completed
+                                            </span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+<button class="text-primary hover:text-blue-700 dark:hover:text-blue-400 font-semibold text-xs mr-3">View Receipt</button>
+<button class="text-primary hover:text-blue-700 dark:hover:text-blue-400 transition-colors">
+<span class="material-symbols-outlined text-[20px]">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 5 -->
+<tr class="hover:bg-[#f9fafb] dark:hover:bg-[#1e2732] transition-colors group">
+<td class="px-6 py-4 whitespace-nowrap">
+<div class="flex items-center gap-3">
+<div class="h-10 w-10 rounded-lg bg-cover bg-center shrink-0 border border-gray-200 dark:border-gray-700" data-alt="Meeting room with table" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD-gy6S5rc4A5_buEIvc7Sv1XASR2A-MVx_KOJBoZKVU0PL5OwctpH2ItJGU8Nw9c4bMQ45lOR4nlEh4rm8-x7iNiQNets-Uf3dFFhvHTgGF-g8rQMwxS3ytb4sR3GA1F1owmB3FJthk52_KB76NRZ18TH6WRhsnEtxQuD7nWO9ckbtpG10sYqr-FL7c_dV85OUTBq4XMsO3zPnMQCXMuXSUtH-eqgbtOAZu7cOT7efB-z3AmpCcZU8kRWxlZiLnEUpU36fGiBpTA");'></div>
+<div class="flex flex-col">
+<span class="text-sm font-bold text-[#111418] dark:text-white group-hover:text-primary transition-colors">Conference Room A</span>
+<span class="text-xs text-[#617589] dark:text-[#9ca3af]">Business Center</span>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-[#111418] dark:text-[#d1d5db]">July 10, 2023</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-[#111418] dark:text-[#d1d5db] font-medium font-mono">02:00 PM - 04:00 PM</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm text-[#617589] dark:text-[#9ca3af]">2 hrs</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300">
+<span class="size-1.5 rounded-full bg-gray-500"></span>
+                                                Completed
+                                            </span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+<button class="text-primary hover:text-blue-700 dark:hover:text-blue-400 font-semibold text-xs mr-3">View Receipt</button>
+<button class="text-primary hover:text-blue-700 dark:hover:text-blue-400 transition-colors">
+<span class="material-symbols-outlined text-[20px]">more_vert</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="flex items-center justify-between border-t border-[#e5e7eb] dark:border-[#374151] px-4 py-3 sm:px-6">
+<div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+<div>
+<p class="text-sm text-[#617589] dark:text-[#9ca3af]">
+                                        Showing
+                                        <span class="font-medium text-[#111418] dark:text-white">1</span>
+                                        to
+                                        <span class="font-medium text-[#111418] dark:text-white">5</span>
+                                        of
+                                        <span class="font-medium text-[#111418] dark:text-white">12</span>
+                                        results
+                                    </p>
+</div>
+<div>
+<nav aria-label="Pagination" class="isolate inline-flex -space-x-px rounded-md shadow-sm">
+<a class="relative inline-flex items-center rounded-l-md px-2 py-2 text-[#617589] dark:text-[#9ca3af] ring-1 ring-inset ring-[#d1d5db] dark:ring-[#374151] hover:bg-gray-50 dark:hover:bg-[#1e2732] focus:z-20 focus:outline-offset-0" href="#">
+<span class="sr-only">Previous</span>
+<span class="material-symbols-outlined text-[20px]">chevron_left</span>
+</a>
+<a aria-current="page" class="relative z-10 inline-flex items-center bg-primary px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary" href="#">1</a>
+<a class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-[#111418] dark:text-[#d1d5db] ring-1 ring-inset ring-[#d1d5db] dark:ring-[#374151] hover:bg-gray-50 dark:hover:bg-[#1e2732] focus:z-20 focus:outline-offset-0" href="#">2</a>
+<a class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-[#111418] dark:text-[#d1d5db] ring-1 ring-inset ring-[#d1d5db] dark:ring-[#374151] hover:bg-gray-50 dark:hover:bg-[#1e2732] focus:z-20 focus:outline-offset-0" href="#">3</a>
+<a class="relative inline-flex items-center rounded-r-md px-2 py-2 text-[#617589] dark:text-[#9ca3af] ring-1 ring-inset ring-[#d1d5db] dark:ring-[#374151] hover:bg-gray-50 dark:hover:bg-[#1e2732] focus:z-20 focus:outline-offset-0" href="#">
+<span class="sr-only">Next</span>
+<span class="material-symbols-outlined text-[20px]">chevron_right</span>
+</a>
+</nav>
+</div>
+</div>
+<!-- Mobile Pagination View -->
+<div class="flex sm:hidden w-full justify-between">
+<a class="relative inline-flex items-center rounded-md border border-[#d1d5db] dark:border-[#374151] bg-white dark:bg-[#1e2732] px-4 py-2 text-sm font-medium text-[#111418] dark:text-white hover:bg-gray-50" href="#">Previous</a>
+<a class="relative ml-3 inline-flex items-center rounded-md border border-[#d1d5db] dark:border-[#374151] bg-white dark:bg-[#1e2732] px-4 py-2 text-sm font-medium text-[#111418] dark:text-white hover:bg-gray-50" href="#">Next</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>
